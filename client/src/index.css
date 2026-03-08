@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 导入指定字体（匹配你图片样式） */
+/* @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap'); */
+/* 导入特定字体 */
+@import "./styles/fonts.css";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 全局使用指定字体 */
+body {
+  @apply font-montserrat bg-white text-gray-900;
+}
+
+@layer utilities {
+  .content-auto {
+    content-visibility: auto;
+  }
+}
