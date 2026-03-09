@@ -1,0 +1,38 @@
+{
+  "files": {
+    "main.css": "/static/css/main.1fb0aeec.css",
+    "main.js": "/static/js/main.14d72b99.js",
+    "static/media/service-strategy.jpg": "/static/media/service-strategy.066727f66312f73a9d7c.jpg",
+    "static/media/hero-bg.jpg": "/static/media/hero-bg.85c856a1ab45e8e4e147.jpg",
+    "static/media/serviceBanner.png": "/static/media/serviceBanner.3eb4d9443a7ab4baa9e4.png",
+    "static/media/service-content.jpg": "/static/media/service-content.5c7f35e6db2bb4b00487.jpg",
+    "static/media/service-influencer.jpg": "/static/media/service-influencer.5688cd6bb2114cba1fa3.jpg",
+    "static/media/canvas-logo.png": "/static/media/canvas-logo.54ba7d9c494aaef362f0.png",
+    "static/media/Agency-LOGO.png": "/static/media/Agency-LOGO.1a60f7a942c89fd32734.png",
+    "static/media/Montserrat-ExtraBold.woff2": "/static/media/Montserrat-ExtraBold.e2d1f06db54324665744.woff2",
+    "static/media/Montserrat-Bold.woff2": "/static/media/Montserrat-Bold.94e6d25a4c0ce5c0f081.woff2",
+    "static/media/Montserrat-SemiBold.woff2": "/static/media/Montserrat-SemiBold.451503b5876552dd998e.woff2",
+    "static/media/Montserrat-Medium.woff2": "/static/media/Montserrat-Medium.cc5e912eec10910e82e8.woff2",
+    "static/media/Montserrat-Regular.woff2": "/static/media/Montserrat-Regular.60a14c0e3d8eefbb4dc4.woff2",
+    "static/media/Montserrat-Light.woff2": "/static/media/Montserrat-Light.021a1313e7c48afaaee5.woff2",
+    "static/media/choose_card_02.jpg": "/static/media/choose_card_02.d9319eb3d56c621cc4e6.jpg",
+    "static/media/Lemon8-logo.png": "/static/media/Lemon8-logo.9e771366b68f5739dcae.png",
+    "static/media/selfyzAI-logo.png": "/static/media/selfyzAI-logo.5e83f16a6652a2c812f2.png",
+    "static/media/choose_card_01.jpg": "/static/media/choose_card_01.953b4a661583b53de052.jpg",
+    "static/media/facemoji-logo.png": "/static/media/facemoji-logo.c840d32f570861b67891.png",
+    "static/media/dola-logo.png": "/static/media/dola-logo.e46de85594727efc0569.png",
+    "static/media/SourGummy-BlackItalic.woff2": "/static/media/SourGummy-BlackItalic.7ee964fe5c336d744d4e.woff2",
+    "static/media/choose_card_03.avif": "/static/media/choose_card_03.8556183edcc20dc5ca9c.avif",
+    "static/media/hailuoai-logo.png": "/static/media/hailuoai-logo.595f2d1f414219a0d21e.png",
+    "static/media/analysis.png": "/static/media/analysis.d98e04835f90cfc51e8a.png",
+    "static/media/discussion.png": "/static/media/discussion.85235c4da8c0054d91a4.png",
+    "static/media/investigate.png": "/static/media/investigate.ab7c965408dceb936fc1.png",
+    "index.html": "/index.html",
+    "main.1fb0aeec.css.map": "/static/css/main.1fb0aeec.css.map",
+    "main.14d72b99.js.map": "/static/js/main.14d72b99.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1fb0aeec.css",
+    "static/js/main.14d72b99.js"
+  ]
+}

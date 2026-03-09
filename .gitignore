@@ -15,8 +15,8 @@ pids
 *.seed
 
 # Build files
-build/
-dist/
+# build/
+# dist/
 
 # Environment variables
 # .env
@@ -42,7 +42,10 @@ Thumbs.db
 coverage/
 
 # React build
-client/build/
+# client/build/
 
 # Node build
 server/dist/
+
+# The branch 'cloudflare-deploy' is builded only by React
+server/
