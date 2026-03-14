@@ -54,8 +54,8 @@ export async function onRequestPost(context) {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                from: context.env.BUSINESS_EMAIL,
-                to: context.env.BUSINESS_EMAIL,
+                from: context.env.SEND_EMAIL,
+                to: context.env.RECIEVE_EMAIL,
                 subject: `New Contact Form Submission from ${name}`,
                 html: html
             })
