@@ -61,8 +61,24 @@ export async function onRequestPost(context) {
             })
         })
 
+        // if (!response.ok) {
+        //     throw new Error("Email sending failed")
+        // }
+
+        const resendData = await response.text()
+
         if (!response.ok) {
-            throw new Error("Email sending failed")
+          return new Response(
+            JSON.stringify({
+              success: false,
+              message: "Resend API error",
+              details: resendData
+            }),
+            {
+              status: response.status,
+              headers: { "Content-Type": "application/json" }
+            }
+          )
         }
 
         return new Response(
