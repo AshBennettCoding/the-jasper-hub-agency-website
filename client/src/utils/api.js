@@ -1,8 +1,8 @@
-const API_URL = process.env.REACT_APP_API_URL || process.env.production.REACT_APP_SITE_URL || process.env.production.REACT_APP_API_URL;
+// const API_URL = process.env.REACT_APP_API_URL || process.env.production.REACT_APP_SITE_URL || process.env.production.REACT_APP_API_URL;
 
 export const sendEmail = async (formData) => {
     try {
-        const response = await fetch(`${API_URL}/contact`, {
+        const response = await fetch(`api/contact`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
