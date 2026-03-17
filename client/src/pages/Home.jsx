@@ -28,7 +28,7 @@ import selfyzAILogo from '../assets/selfyzAI-logo.webp';
 import AirBrushLogo from '../assets/airbrush-logo.webp';
 import QuestionAILogo from '../assets/QuestionAI-logo.webp';
 // 导入logo图标
-import LogoIcon from '../assets/Agency-LOGO.webp';
+import LogoIcon from '../assets/Agency-LOGO.png';
 
 
 

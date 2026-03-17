@@ -131,7 +131,7 @@ const Navbar = ({ isHome, changeLanguage, i18n, t }) => {
                 {/* LOGO 部分：优化响应式缩放 */}
                 <Link to={`/?lang=${currentLang}`} className="logo-container h-20 md:h-24 flex items-center" style={{ overflow: 'visible' }}>
                     <img
-                        src={require('../assets/Agency-LOGO.webp')} // 替换为实际LOGO路径
+                        src={require('../assets/Agency-LOGO.png')} // 替换为实际LOGO路径
                         loading='eager'
                         alt="Jasper Logo"
                         style={{
