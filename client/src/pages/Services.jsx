@@ -298,7 +298,7 @@ const Services = ({ changeLanguage, i18n, t }) => {
                                 <div className="flex items-center justify-center w-16 h-16 mb-4 mx-auto">
                                     {/* 这里可以替换为矢量图标 */}
                                     <img
-                                        src={require(`../assets/icons/${service.icon}.webp`)}
+                                        src={require(`../assets/icons/${service.icon}.png`)}
                                         loading='eager'
                                         alt={service.title}
                                         className="w-full h-full object-contain"
