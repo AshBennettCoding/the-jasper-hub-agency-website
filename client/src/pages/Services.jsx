@@ -5,11 +5,11 @@ import { motion, useInView } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 // 导入服务页横幅图片
-import ServiceBanner from '../assets/serviceBanner.png';
+import ServiceBanner from '../assets/serviceBanner.webp';
 // 导入服务页插图
-import StrategyPlan from '../assets/service-strategy.jpg'
-import ContentCreate from '../assets/service-content.jpg'
-import Influencer from '../assets/service-influencer.jpg'
+import StrategyPlan from '../assets/service-strategy.webp'
+import ContentCreate from '../assets/service-content.webp'
+import Influencer from '../assets/service-influencer.webp'
 
 // 引入 Google Fonts
 // const link = document.createElement('link');
@@ -46,6 +46,7 @@ const Services = ({ changeLanguage, i18n, t }) => {
                         alt="Service Banner"
                         className="w-full h-full object-cover"
                         style={{ objectFit: 'cover', backgroundPosition: 'center' }}
+                        loading='eager'
                     />
                     <div className="absolute inset-0 bg-white/80"></div>
                 </div>
@@ -103,6 +104,7 @@ const Services = ({ changeLanguage, i18n, t }) => {
                             >
                                 <img
                                     src={StrategyPlan}
+                                    loading='lazy'
                                     alt="Strategy Planning"
                                     className="w-full h-full object-cover rounded-2xl shadow-2xl"
                                 />
@@ -125,6 +127,7 @@ const Services = ({ changeLanguage, i18n, t }) => {
                             >
                                 <img
                                     src={ContentCreate}
+                                    loading='lazy'
                                     alt="Content Creation"
                                     className="w-full h-full object-cover rounded-2xl shadow-2xl"
                                 />
@@ -148,6 +151,7 @@ const Services = ({ changeLanguage, i18n, t }) => {
                                 <div className="relative w-full h-full overflow-hidden rounded-2xl shadow-2xl">
                                     <img
                                         src={Influencer}
+                                        loading='lazy'
                                         alt="Influencer Collaboration"
                                         className="w-full h-full object-cover"
                                     />
@@ -294,7 +298,8 @@ const Services = ({ changeLanguage, i18n, t }) => {
                                 <div className="flex items-center justify-center w-16 h-16 mb-4 mx-auto">
                                     {/* 这里可以替换为矢量图标 */}
                                     <img
-                                        src={require(`../assets/icons/${service.icon}.png`)}
+                                        src={require(`../assets/icons/${service.icon}.webp`)}
+                                        loading='eager'
                                         alt={service.title}
                                         className="w-full h-full object-contain"
                                     />

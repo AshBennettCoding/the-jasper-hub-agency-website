@@ -9,26 +9,26 @@ import AboutSection from '../components/AboutSection';
 import Footer from '../components/Footer';
 
 // 导入背景图（替换为你的路径）
-import HeroBg from '../assets/hero-bg.jpg';
+import HeroBg from '../assets/hero-bg.webp';
 // 导入卡片图（替换为你的路径）
-import ChooseCard01 from '../assets/choose_card_01.jpg'
-import ChooseCard02 from '../assets/choose_card_02.jpg'
-import ChooseCard03 from '../assets/choose_card_03.avif'
+import ChooseCard01 from '../assets/choose_card_01.webp'
+import ChooseCard02 from '../assets/choose_card_02.webp'
+import ChooseCard03 from '../assets/choose_card_03.webp'
 // 合作伙伴品牌LOGO
-import CapCutLogo from '../assets/capcut-logo.png';
-import DolaLogo from '../assets/dola-logo.png';
-import FacemojiLogo from '../assets/facemoji-logo.png';
-import HailuoAILogo from '../assets/hailuoai-logo.png';
-import CanvaLogo from '../assets/canvas-logo.png';
-import DreaminaLogo from '../assets/Dreamina-logo.png';
-import Lemon8Logo from '../assets/Lemon8-logo.png';
-import HypicLogo from '../assets/Hypic-logo.png';
-import klingAILogo from '../assets/klingAI-logo.png';
-import selfyzAILogo from '../assets/selfyzAI-logo.png';
-import AirBrushLogo from '../assets/airbrush-logo.png';
-import QuestionAILogo from '../assets/QuestionAI-logo.png';
+import CapCutLogo from '../assets/capcut-logo.webp';
+import DolaLogo from '../assets/dola-logo.webp';
+import FacemojiLogo from '../assets/facemoji-logo.webp';
+import HailuoAILogo from '../assets/hailuoai-logo.webp';
+import CanvaLogo from '../assets/canvas-logo.webp';
+import DreaminaLogo from '../assets/Dreamina-logo.webp';
+import Lemon8Logo from '../assets/Lemon8-logo.webp';
+import HypicLogo from '../assets/Hypic-logo.webp';
+import klingAILogo from '../assets/klingAI-logo.webp';
+import selfyzAILogo from '../assets/selfyzAI-logo.webp';
+import AirBrushLogo from '../assets/airbrush-logo.webp';
+import QuestionAILogo from '../assets/QuestionAI-logo.webp';
 // 导入logo图标
-import LogoIcon from '../assets/Agency-LOGO.png';
+import LogoIcon from '../assets/Agency-LOGO.webp';
 
 
 
@@ -132,6 +132,7 @@ const Home = ({ changeLanguage, i18n }) => {
                 <div className="absolute inset-0 z-0" style={{ minHeight: '100vh', width: '100vw', top: 0, left: 0 }}>
                     <img
                         src={HeroBg}
+                        loading='eager'
                         alt="Hero Background"
                         className="w-full h-full object-cover blur-sm opacity-70"
                         style={{ objectFit: 'cover', backgroundPosition: 'center' }}
@@ -207,6 +208,7 @@ const Home = ({ changeLanguage, i18n }) => {
                     <div className="flex justify-center mb-8">
                         <img
                             src={LogoIcon}
+                            loading='eager'
                             alt="Logo Icon"
                             className="w-60 h-auto"
                         />
@@ -246,6 +248,7 @@ const Home = ({ changeLanguage, i18n }) => {
                             <div className="h-40 bg-blue-200/50 rounded-xl overflow-hidden">
                                 <img
                                     src={ChooseCard01}
+                                    loading='lazy'
                                     alt="Global Network"
                                     className="w-full h-full object-cover"
                                 />
@@ -270,6 +273,7 @@ const Home = ({ changeLanguage, i18n }) => {
                             <div className="h-40 bg-green-200/50 rounded-xl overflow-hidden">
                                 <img
                                     src={ChooseCard02}
+                                    loading='lazy'
                                     alt="Data-Driven"
                                     className="w-full h-full object-cover"
                                 />
@@ -294,6 +298,7 @@ const Home = ({ changeLanguage, i18n }) => {
                             <div className="h-40 bg-purple-200/50 rounded-xl overflow-hidden">
                                 <img
                                     src={ChooseCard03}
+                                    loading='lazy'
                                     alt="Full Service"
                                     className="w-full h-full object-cover"
                                 />
@@ -332,6 +337,7 @@ const Home = ({ changeLanguage, i18n }) => {
                             >
                                 <img
                                     src={brand.logo}
+                                    loading='lazy'
                                     alt={brand.name}
                                     className="max-w-full max-h-16 object-contain filter grayscale hover:grayscale-0 transition-all duration-200"
                                 />
