@@ -1,193 +1,168 @@
-// src/components/Navbar.jsx 完整适配版
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import AgencyLogo from '../assets/Agency-LOGO.png';
 
-const navStyles = `
-  /* 基础样式保留，新增响应式媒体查询 */
-  .nav-item {
-    position: relative;
-    display: inline-block;
-    padding: 8px 0;
-    font-size: 18px;
-    font-weight: 500;
-    color: #374151;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    transform: translateY(0);
-  }
-  .nav-item:hover {
-    color: #0FB97F;
-    transform: translateY(-3px);
-  }
-  .nav-item::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background-color: #0FB97F;
-    transition: all 0.3s ease;
-    transform: translateX(-50%);
-  }
-  .nav-item:hover::after {
-    width: 100%;
-    left: 0;
-    transform: translateX(0);
-  }
-  .lang-btn {
-    transition: all 0.3s ease;
-    border: none;
-    cursor: pointer;
-  }
-  .lang-btn:hover {
-    transform: translateY(-2px);
-  }
-  .logo-container {
-    overflow: visible !important;
-    z-index: 10;
-  }
+const navigationItems = [
+    { key: 'home', path: '/' },
+    { key: 'services', path: '/services' },
+    { key: 'forInfluencers', path: '/globaltalents-collab' },
+    { key: 'contact', path: '/contact' },
+];
 
-  /* 响应式适配：平板/手机端 */
-  @media (max-width: 768px) {
-    .nav-item {
-      font-size: 14px; /* 缩小导航文字 */
-      padding: 4px 0;
-    }
-    .lang-btn {
-      padding: 2px 6px; /* 缩小语言按钮 */
-      font-size: 12px;
-    }
-    .nav-container {
-      padding-left: 20px !important;
-      padding-right: 20px !important;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .nav-item {
-      font-size: 12px;
-      margin: 0 4px; /* 减少导航项间距 */
-    }
-    .logo-container img {
-      transform: scale(2) !important; /* 缩小LOGO缩放比例 */
-    }
-  }
-`;
-
-const Navbar = ({ isHome, changeLanguage, i18n, t }) => {
-    // 容错处理
-    const currentLang = i18n?.language || 'zh';
+const Navbar = ({ isHome = false, changeLanguage, i18n, t }) => {
+    const currentLang = i18n?.language || 'en';
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
 
-    // 处理语言切换，同时更新URL
-    const handleLangChange = (lang) => {
+    const translate = (key) => (typeof t === 'function' ? t(key) : key);
+
+    const handleLangChange = (language) => {
+        setIsMobileMenuOpen(false);
         if (typeof changeLanguage === 'function') {
-            changeLanguage(lang);
+            changeLanguage(language);
+            return;
         }
 
-        // 获取当前路径
-        const currentPath = location.pathname;
-        // 构建新的URL，保留当前路径并添加语言参数
-        const newUrl = `${currentPath}?lang=${lang}`;
-        navigate(newUrl);
+        navigate(`${location.pathname}?lang=${language}`);
     };
 
-    const translate = (key) => {
-        return typeof t === 'function' ? t(key) : key;
-    };
-
-    // 优化导航栏样式：增加响应式高度+容器类名
-    const navBaseStyle = {
-        height: '100px', // 固定高度，方便页面计算padding
-        backgroundColor: isHome ? 'transparent' : '#ffffff',
-        boxShadow: isHome ? 'none' : '0 2px 4px rgba(0,0,0,0.1)',
-        position: isHome ? 'absolute' : 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        zIndex: 9999, // 提高z-index避免被遮挡
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingLeft: '60px',
-        paddingRight: '60px',
-        boxSizing: 'border-box', // 关键：padding计入宽度，避免溢出
-        // 响应式高度
-        '@media (max-width: 768px)': {
-            height: '80px',
-        },
-        '@media (max-width: 480px)': {
-            height: '70px',
-        }
-    };
+    const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
     return (
         <>
-            <style>{navStyles}</style>
-            {/* 增加nav-container类名，方便响应式控制 */}
-            <nav style={navBaseStyle} className="nav-container">
-                {/* LOGO 部分：优化响应式缩放 */}
-                <Link to={`/?lang=${currentLang}`} className="logo-container h-20 md:h-24 flex items-center" style={{ overflow: 'visible' }}>
-                    <img
-                        src={require('../assets/Agency-LOGO.png')} // 替换为实际LOGO路径
-                        loading='eager'
-                        alt="Jasper Logo"
-                        style={{
-                            transform: 'scale(0.2)',
-                            transformOrigin: 'left center',
-                            maxWidth: 'none',
-                            maxHeight: 'none',
-                            display: 'block',
-                            overflow: 'visible',
-                            // 小屏幕缩小LOGO
-                            '@media (max-width: 768px)': {
-                                transform: 'scale(0)',
-                            },
-                            '@media (max-width: 480px)': {
-                                transform: 'scale(0)',
-                            }
-                        }}
-                    />
-                </Link>
+            <style>{`
+                .mobile-menu-toggle { display: none; }
+                @media (max-width: 767px) {
+                    .mobile-menu-toggle {
+                        display: inline-flex;
+                        width: 40px;
+                        height: 40px;
+                        align-items: center;
+                        justify-content: center;
+                        border: 0;
+                        border-radius: 9999px;
+                        background: #f6faf6;
+                        color: #161d19;
+                    }
+                    .primary-navigation {
+                        display: none;
+                        position: absolute;
+                        top: 100%;
+                        left: 0;
+                        right: 0;
+                        padding: 12px 24px 20px;
+                        background: rgba(255,255,255,.98);
+                        box-shadow: 0 8px 20px rgba(0,0,0,.08);
+                    }
+                    .primary-navigation.is-open {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: stretch;
+                        gap: 16px;
+                    }
+                    .primary-navigation nav {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: stretch;
+                        gap: 4px;
+                    }
+                    .primary-navigation nav a {
+                        min-height: 44px;
+                        display: flex;
+                        align-items: center;
+                    }
+                    .nav-actions { justify-content: space-between; }
+                }
+            `}</style>
+            <header className={`site-header fixed inset-x-0 top-0 z-50 border-b border-black/[0.04] bg-white/90 backdrop-blur-md${isHome ? '' : ' shadow-[0_1px_8px_rgba(0,0,0,0.04)]'}`}>
+                <div className="mx-auto flex h-20 max-w-[1200px] items-center justify-between px-6">
+                    <Link
+                        to={`/?lang=${currentLang}`}
+                        className="flex h-12 w-[176px] items-center overflow-hidden"
+                        aria-label="The Jasper Hub Home"
+                        onClick={closeMobileMenu}
+                    >
+                        <img
+                            src={AgencyLogo}
+                            alt="The Jasper Hub"
+                            className="h-auto w-[176px] max-w-none shrink-0"
+                        />
+                    </Link>
 
-                {/* 导航+语言切换：优化间距 */}
-                <div className="flex items-center gap-4 md:gap-6">
-                    {['home', 'services', 'contact'].map((item) => (
-                        <Link
-                            key={item}
-                            to={item === 'home' ? `/?lang=${currentLang}` : `/${item}?lang=${currentLang}`}
-                            className="nav-item"
-                            style={{ color: !isHome ? '#374151' : '#374151' }}
-                        >
-                            {translate(item)}
-                        </Link>
-                    ))}
+                    <button
+                        type="button"
+                        className="mobile-menu-toggle"
+                        aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+                        aria-expanded={isMobileMenuOpen}
+                        aria-controls="primary-navigation"
+                        onClick={() => setIsMobileMenuOpen((open) => !open)}
+                    >
+                        <span className="material-symbols-outlined" aria-hidden="true">
+                            {isMobileMenuOpen ? 'close' : 'menu'}
+                        </span>
+                    </button>
 
-                    {/* 语言切换按钮：增加间距适配 */}
-                    <div className="ml-2 flex gap-2">
-                        <button
-                            onClick={() => handleLangChange('en')}
-                            className={`lang-btn px-3 py-1 rounded text-sm font-medium ${currentLang === 'en'
-                                ? 'bg-[#0FB97F] text-white'
-                                : `bg-gray-100/80 text-gray-800 hover:bg-gray-200/80 ${!isHome ? 'bg-gray-200/80' : ''}`
-                                }`}
-                        >
-                            EN
-                        </button>
-                        <button
-                            onClick={() => handleLangChange('zh')}
-                            className={`lang-btn px-3 py-1 rounded text-sm font-medium ${currentLang === 'zh'
-                                ? 'bg-[#0FB97F] text-white'
-                                : `bg-gray-100/80 text-gray-800 hover:bg-gray-200/80 ${!isHome ? 'bg-gray-200/80' : ''}`
-                                }`}
-                        >
-                            中文
-                        </button>
+                    <div
+                        id="primary-navigation"
+                        className={`primary-navigation flex items-center gap-8${isMobileMenuOpen ? ' is-open' : ''}`}
+                    >
+                        <nav aria-label="Main navigation" className="hidden items-center gap-8 md:flex">
+                            {navigationItems.map(({ key, path }) => {
+                                const label = translate(key === 'forInfluencers' ? 'navForInfluencers' : key);
+                                const isCurrent = location.pathname === path;
+                                return (
+                                    <Link
+                                        key={key}
+                                        to={`${path}?lang=${currentLang}`}
+                                        aria-current={isCurrent ? 'page' : undefined}
+                                        className={`font-montserrat text-[15px] transition-colors ${
+                                            isCurrent
+                                                ? 'border-b-2 border-[#0FB97F] pb-0.5 font-bold text-[#006C48]'
+                                                : 'text-[#555555] hover:text-[#111111]'
+                                        }`}
+                                        onClick={closeMobileMenu}
+                                    >
+                                        {label}
+                                    </Link>
+                                );
+                            })}
+                        </nav>
+
+                        <div className="nav-actions flex items-center gap-4">
+                            <div className="flex items-center rounded-full bg-gray-100 p-1 shadow-inner">
+                                {[
+                                    { language: 'en', label: 'EN' },
+                                    { language: 'zh', label: '中文' },
+                                ].map(({ language, label }) => (
+                                    <button
+                                        key={language}
+                                        type="button"
+                                        aria-pressed={currentLang === language}
+                                        onClick={() => handleLangChange(language)}
+                                        className={`rounded-full px-3.5 py-1 font-montserrat text-xs transition-colors ${
+                                            currentLang === language
+                                                ? 'bg-[#0FB97F] font-bold text-white shadow-sm'
+                                                : 'text-[#555555] hover:text-[#111111]'
+                                        }`}
+                                    >
+                                        {label}
+                                    </button>
+                                ))}
+                            </div>
+                            <Link
+                                to={`/contact?lang=${currentLang}`}
+                                aria-label="Portal"
+                                title="Portal"
+                                className="flex h-8 w-8 items-center justify-center rounded-full bg-[#0FB97F]/10 text-[#0FB97F] transition-colors hover:bg-[#0FB97F]/20"
+                                onClick={closeMobileMenu}
+                            >
+                                <span className="material-symbols-outlined text-[19px]" aria-hidden="true">person</span>
+                            </Link>
+                        </div>
                     </div>
                 </div>
-            </nav>
+            </header>
         </>
     );
 };

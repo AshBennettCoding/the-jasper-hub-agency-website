@@ -1,5 +1,7 @@
 {
+    "type": "module",
     "scripts": {
-      "build": "cd client && npm install && npm run build"
+      "build": "cd client && npm install && npm run build",
+      "test:functions": "node --test functions/api/contact.test.js"
     }
-  }
+}

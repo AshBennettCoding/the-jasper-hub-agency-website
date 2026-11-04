@@ -1,20 +1,14 @@
-// src/pages/Home.jsx
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom'; // 添加导航钩子导入
-
-import Navbar from '../components/Navbar'; // 导入共享导航栏
+import Navbar from '../components/Navbar';
 import AboutSection from '../components/AboutSection';
 import Footer from '../components/Footer';
-
-// 导入背景图（替换为你的路径）
 import HeroBg from '../assets/hero-bg.webp';
-// 导入卡片图（替换为你的路径）
-import ChooseCard01 from '../assets/choose_card_01.webp'
-import ChooseCard02 from '../assets/choose_card_02.webp'
-import ChooseCard03 from '../assets/choose_card_03.webp'
-// 合作伙伴品牌LOGO
+import ChooseCard01 from '../assets/choose_card_01.webp';
+import ChooseCard02 from '../assets/choose_card_02.webp';
+import ChooseCard03 from '../assets/choose_card_03.webp';
 import CapCutLogo from '../assets/capcut-logo.webp';
 import DolaLogo from '../assets/dola-logo.webp';
 import FacemojiLogo from '../assets/facemoji-logo.webp';
@@ -23,378 +17,215 @@ import CanvaLogo from '../assets/canvas-logo.webp';
 import DreaminaLogo from '../assets/Dreamina-logo.webp';
 import Lemon8Logo from '../assets/Lemon8-logo.webp';
 import HypicLogo from '../assets/Hypic-logo.webp';
-import klingAILogo from '../assets/klingAI-logo.webp';
-import selfyzAILogo from '../assets/selfyzAI-logo.webp';
+import KlingAILogo from '../assets/klingAI-logo.webp';
+import SelfyzAILogo from '../assets/selfyzAI-logo.webp';
 import AirBrushLogo from '../assets/airbrush-logo.webp';
 import QuestionAILogo from '../assets/QuestionAI-logo.webp';
-// 导入logo图标
-import LogoIcon from '../assets/Agency-LOGO.png';
 
+const brandLogos = [
+    { name: 'CapCut', image: CapCutLogo },
+    { name: 'Dola', image: DolaLogo },
+    { name: 'Facemoji', image: FacemojiLogo },
+    { name: 'Hailuo AI', image: HailuoAILogo },
+    { name: 'Canva', image: CanvaLogo },
+    { name: 'Dreamina', image: DreaminaLogo },
+    { name: 'Lemon8', image: Lemon8Logo },
+    { name: 'Hypic', image: HypicLogo },
+    { name: 'Kling AI', image: KlingAILogo },
+    { name: 'Selfyz AI', image: SelfyzAILogo },
+    { name: 'AirBrush', image: AirBrushLogo },
+    { name: 'Question AI', image: QuestionAILogo },
+];
 
+const featureCards = [
+    {
+        titleKey: 'reason1',
+        descriptionKey: 'reason1Desc',
+        tag: 'Successful Cases',
+        tagClass: 'bg-[#E9F2FE] text-[#1A73E8]',
+        image: ChooseCard01,
+        alt: 'Business partners discussing a campaign',
+    },
+    {
+        titleKey: 'reason2',
+        descriptionKey: 'reason2Desc',
+        tag: 'Data-Driven',
+        tagClass: 'bg-[#E6F8F0] text-[#0FB97F]',
+        image: ChooseCard02,
+        alt: 'Marketing analytics and growth metrics',
+    },
+    {
+        titleKey: 'reason3',
+        descriptionKey: 'reason3Desc',
+        tag: 'Asset accumulation',
+        tagClass: 'bg-[#F5EDFD] text-[#8430D9]',
+        image: ChooseCard03,
+        alt: 'Creative team planning a campaign',
+    },
+];
 
 const Home = ({ changeLanguage, i18n }) => {
-
     const { t } = useTranslation();
-    const navigate = useNavigate(); // 添加导航钩子初始化
-
-    const [currentSubIndex, setCurrentSubIndex] = useState(0);
-    const carouselTimerRef = useRef(null);
-
-    // 添加跳转到服务页面的函数
-    const handleContactNavigate = () => {
-        const contactRoute = `/contact?lang=${i18n.language}`;
-        navigate(contactRoute);
-    };
-
-    // 副标题配置
-    const subTitleConfig = useMemo(() => ({
-        en: [
-            t('intro_sub'),
-            "Professional full-case planning of marketing activities for APP/website products on social media platforms"
-        ],
-        zh: [
-            t('intro_sub'),
-            "专业服务APP/网站产品在社媒平台上的营销活动全案策划"
-        ]
-    }), [t]);
-
-    const getSubTitleList = useCallback(() => {
-        return subTitleConfig[i18n.language] || subTitleConfig.en;
-    }, [i18n.language, subTitleConfig]);
-
-    // 轮播启停函数
-    const startCarousel = useCallback(() => {
-        if (carouselTimerRef.current) clearInterval(carouselTimerRef.current);
-        carouselTimerRef.current = setInterval(() => {
-            setCurrentSubIndex(prev => (prev + 1) % getSubTitleList().length);
-        }, 1100);
-    }, [getSubTitleList]);
-
-    const pauseCarousel = useCallback(() => {
-        if (carouselTimerRef.current) {
-            clearInterval(carouselTimerRef.current);
-            carouselTimerRef.current = null;
-        }
-    }, []);
-
-    // 初始化轮播
-    useEffect(() => {
-        setCurrentSubIndex(0);
-        startCarousel();
-        return () => pauseCarousel();
-    }, [i18n.language, getSubTitleList, startCarousel, pauseCarousel]);
-
-    // 文字动画
-    const textAnimate = (delay) => ({
-        hidden: { opacity: 0, y: 60 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.9, delay, ease: "easeOut" } }
-    });
-
-    // 副标题轮播动画
-    const subTitleVariants = {
-        enter: (direction) => ({ y: direction > 0 ? 50 : -50, opacity: 0 }),
-        center: { y: 0, opacity: 1, transition: { duration: 0.5, ease: "easeOut" } },
-        exit: (direction) => ({ y: direction > 0 ? -50 : 50, opacity: 0, transition: { duration: 0.5, ease: "easeIn" } })
-    };
-
-    const sectionVariants = {
-        hidden: { opacity: 0, y: 40 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
-    };
-
-    // 品牌LOGO数据（示例）
-    const brandLogos = [
-        { id: 1, name: 'CapCut', logo: CapCutLogo },
-        { id: 2, name: 'Dola', logo: DolaLogo },
-        { id: 3, name: 'Facemoji', logo: FacemojiLogo },
-        { id: 4, name: 'HailuoAI', logo: HailuoAILogo },
-        { id: 5, name: 'Canva', logo: CanvaLogo },
-        { id: 6, name: 'Dreamina', logo: DreaminaLogo },
-        { id: 7, name: 'Lemon8', logo: Lemon8Logo },
-        { id: 8, name: 'Hypic', logo: HypicLogo },
-        { id: 9, name: 'klingAI', logo: klingAILogo },
-        { id: 10, name: 'selfyzAI', logo: selfyzAILogo },
-        { id: 11, name: 'AirBrush', logo: AirBrushLogo },
-        { id: 12, name: 'QuestionAI', logo: QuestionAILogo }
-    ];
+    const language = i18n?.language || 'en';
 
     return (
         <div className="min-h-screen font-montserrat">
-            {/* 首页：导航栏 + 简介 融合在同一个全屏section */}
-            <motion.section
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                className="relative w-full flex flex-col items-center justify-center px-8 md:px-12 overflow-hidden"
-                style={{ minHeight: '100vh' }}
-            >
-                {/* 全屏背景 */}
-                <div className="absolute inset-0 z-0" style={{ minHeight: '100vh', width: '100vw', top: 0, left: 0 }}>
-                    <img
-                        src={HeroBg}
-                        loading='eager'
-                        alt="Hero Background"
-                        className="w-full h-full object-cover blur-sm opacity-70"
-                        style={{ objectFit: 'cover', backgroundPosition: 'center' }}
-                    />
-                    <div className="absolute inset-0 bg-white/60"></div>
-                </div>
-
-                {/* 导入共享导航栏：isHome=true → 透明背景，融入布局 */}
-                <Navbar
-                    isHome={true}
-                    changeLanguage={changeLanguage}
-                    i18n={i18n}
-                    t={t}
-                />
-
-                {/* 简介文字区域 */}
-                <div className="mt-16 z-10">
-                    <motion.p
-                        initial="hidden"
-                        animate="visible"
-                        variants={textAnimate(0.4)}
-                        className="text-base md:text-lg uppercase tracking-widest text-gray-800 mb-6 md:mb-8 font-montserrat"
-                    >
-                        {t('intro_tag')}
-                    </motion.p>
-
-                    <motion.h1
-                        initial="hidden"
-                        animate="visible"
-                        variants={textAnimate(0.9)}
-                        className="text-5xl md:text-7xl font-bold leading-tight text-gray-900 mb-8 md:mb-10 text-center font-montserrat"
-                    >
-                        The Jasper Hub Agency
-                    </motion.h1>
-
-                    {/* 副标题轮播（悬浮暂停） */}
+            <Navbar isHome changeLanguage={changeLanguage} i18n={i18n} t={t} />
+            <main className="w-full bg-white pt-20">
+                <section
+                    id="home"
+                    className="relative flex min-h-[580px] w-full items-center justify-center overflow-hidden pb-20 pt-16 md:min-h-[640px] md:pb-28 md:pt-24"
+                >
                     <div
-                        className="h-24 md:h-32 flex items-center justify-center overflow-hidden"
-                        onMouseEnter={pauseCarousel}
-                        onMouseLeave={startCarousel}
-                        style={{ cursor: 'default' }}
-                    >
-                        <motion.div
-                            key={`${i18n.language}-${currentSubIndex}`}
-                            custom={1}
-                            initial="enter"
-                            animate="center"
-                            exit="exit"
-                            variants={subTitleVariants}
-                            className="w-full text-center"
+                        aria-hidden="true"
+                        className="absolute inset-0 scale-105 bg-cover bg-center opacity-40 mix-blend-multiply blur-[1.5px]"
+                        style={{ backgroundImage: `url(${HeroBg})` }}
+                    />
+                    <div
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/70 via-white/85 to-white"
+                    />
+                    <div className="relative z-10 mx-auto flex max-w-[1000px] flex-col items-center px-6 text-center">
+                        <Link
+                            to={`/globaltalents-collab?lang=${language}`}
+                            className="group mb-8 inline-flex items-center gap-2 rounded-full border border-[#0FB97F]/40 bg-white/90 px-5 py-2 text-xs font-semibold uppercase text-[#006C48] shadow-sm transition hover:-translate-y-0.5 hover:border-[#0FB97F] hover:bg-[#E7F8F2]/70 hover:shadow-md sm:text-sm"
                         >
-                            <p className="text-xl md:text-2xl leading-relaxed text-gray-800 max-w-2xl mx-auto font-montserrat">
-                                {getSubTitleList()[currentSubIndex]}
+                            <span className="h-2 w-2 rounded-full bg-[#0FB97F]" aria-hidden="true" />
+                            <span>{t('forInfluencers')}</span>
+                            <span className="material-symbols-outlined text-base text-[#0FB97F]" aria-hidden="true">arrow_forward</span>
+                        </Link>
+                        <p className="mb-4 text-xs font-semibold uppercase text-[#555555] sm:text-[13px] sm:tracking-[0.24em]">
+                            {t('intro_tag')}
+                        </p>
+                        <h1 className="mb-5 text-[40px] font-extrabold leading-[1.12] text-[#111111] sm:text-[54px] md:text-[64px]">
+                            The Jasper Hub Agency
+                        </h1>
+                        <p className="font-inter mb-10 max-w-2xl text-base leading-relaxed text-[#555555] sm:text-lg md:text-[19px]">
+                            {t('intro_sub')}
+                        </p>
+                        <Link
+                            to={`/contact?lang=${language}`}
+                            className="group inline-flex items-center justify-center gap-2.5 rounded-full bg-[#0FB97F] px-8 py-3.5 text-sm font-bold uppercase text-white shadow-[0_8px_20px_rgba(15,185,127,0.32)] transition hover:-translate-y-1 hover:scale-[1.02] hover:bg-[#0CA06E] hover:shadow-[0_12px_28px_rgba(15,185,127,0.45)] active:translate-y-0 md:text-base"
+                        >
+                            <span>{t('getStarted')}</span>
+                            <span className="material-symbols-outlined text-lg transition-transform group-hover:translate-x-1" aria-hidden="true">
+                                arrow_forward
+                            </span>
+                        </Link>
+                    </div>
+                </section>
+
+                <AboutSection i18n={i18n} t={t} />
+
+                <section id="why-choose-us" className="w-full bg-white py-24">
+                    <div className="mx-auto max-w-[1240px] px-6">
+                        <div className="mb-16 flex flex-col items-center text-center">
+                            <div className="mb-4 flex items-center justify-center">
+                                <img
+                                    src={require('../assets/Agency-LOGO.png')}
+                                    alt="The Jasper Hub"
+                                    className="h-8 w-[120px] object-cover object-center"
+                                />
+                            </div>
+                            <h2 className="text-3xl font-extrabold text-[#111111] sm:text-4xl">
+                                {t('whyChooseUs')}
+                            </h2>
+                            <div className="mb-4 mt-3.5 h-1 w-12 rounded-full bg-[#0FB97F]" />
+                            <p className="font-inter max-w-xl text-base leading-relaxed text-[#555555]">
+                                {language === 'zh'
+                                    ? '我们提供全面的解决方案，帮助您的品牌在数字领域中脱颖而出。'
+                                    : 'We provide comprehensive solutions to help your brand stand out in the digital landscape.'}
                             </p>
-                        </motion.div>
+                        </div>
+
+                        <div className="grid grid-cols-1 items-stretch gap-8 md:grid-cols-3">
+                            {featureCards.map((card, index) => (
+                                <motion.article
+                                    key={card.titleKey}
+                                    initial={{ opacity: 0, y: 24 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.35, delay: index * 0.08 }}
+                                    className="group flex flex-col rounded-3xl border border-gray-100 bg-white p-7 shadow-[0_4px_24px_rgba(0,0,0,0.03)] transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_16px_36px_rgba(0,0,0,0.08)]"
+                                >
+                                    <span className={`mb-5 inline-flex w-fit items-center rounded-full px-4 py-1.5 text-xs font-semibold ${card.tagClass}`}>
+                                        {card.tag}
+                                    </span>
+                                    <h3 className="mb-3 text-xl font-bold text-[#111111] transition-colors group-hover:text-[#006C48]">
+                                        {t(card.titleKey)}
+                                    </h3>
+                                    <p className="font-inter mb-6 flex-grow text-sm leading-relaxed text-[#555555]">
+                                        {t(card.descriptionKey)}
+                                    </p>
+                                    <div className="h-52 w-full overflow-hidden rounded-2xl bg-gray-100">
+                                        <img
+                                            src={card.image}
+                                            alt={card.alt}
+                                            loading="lazy"
+                                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                        />
+                                    </div>
+                                </motion.article>
+                            ))}
+                        </div>
                     </div>
-                </div>
-            </motion.section>
+                </section>
 
-            {/* 关于我们（示例） */}
-            <AboutSection i18n={i18n} t={t} />
-
-            {/* 为什么选择我们 */}
-            <motion.section
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={sectionVariants}
-                className="py-24 px-4 md:px-8 lg:px-16 bg-gray-50 font-montserrat"
-            >
-                <div className="max-w-7xl mx-auto">
-                    {/* 顶部居中的logo */}
-                    <div className="flex justify-center mb-8">
-                        <img
-                            src={LogoIcon}
-                            loading='eager'
-                            alt="Logo Icon"
-                            className="w-60 h-auto"
-                        />
+                <section className="w-full border-t border-gray-100 bg-white py-20">
+                    <div className="mx-auto max-w-[1240px] px-6">
+                        <div className="mb-16 text-center">
+                            <h2 className="mb-3 text-3xl font-extrabold text-[#111111] sm:text-4xl">
+                                {t('successCases')}
+                            </h2>
+                            <p className="font-inter text-base text-[#555555]">{t('brandsWeWorkedWith')}</p>
+                        </div>
+                        <div className="grid grid-cols-2 items-center justify-items-center gap-8 sm:grid-cols-3 md:grid-cols-6">
+                            {brandLogos.map(({ name, image }) => (
+                                <div
+                                    key={name}
+                                    className="group flex h-24 w-24 items-center justify-center rounded-2xl p-4 opacity-70 transition hover:scale-105 hover:bg-gray-50 hover:opacity-100"
+                                >
+                                    <img
+                                        src={image}
+                                        alt={name}
+                                        loading="lazy"
+                                        className="max-h-full max-w-full object-contain grayscale transition group-hover:grayscale-0"
+                                    />
+                                </div>
+                            ))}
+                        </div>
                     </div>
+                </section>
 
-
-                    {/* 大标题 */}
-                    <div className="text-center mb-16">
-                        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 font-montserrat">
-                            {t('whyChooseUs')}
-                        </h2>
-                        <div className="w-20 h-1.5 bg-[#0FB97F] mx-auto mb-8 rounded-full"></div>
-                        <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                            {i18n.language === 'zh'
-                                ? '我们提供全面的解决方案，帮助您的品牌在数字领域中脱颖而出。'
-                                : 'We provide comprehensive solutions to help your brand stand out in the digital landscape.'}
-                        </p>
-                    </div>
-
-                    {/* 三个功能卡片 */}
-                    <div className="grid md:grid-cols-3 gap-10">
-                        {/* 卡片1 */}
-                        <motion.div
-                            className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 group"
-                            whileHover={{ y: -12 }}
-                            initial={{ opacity: 0, y: 40 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: 0.1 }}
-                        >
-                            {/* 药丸形状的标签 */}
-                            <div className="inline-block px-4 py-1.5 bg-blue-200 text-blue-800 rounded-full text-sm font-semibold mb-6">
-                                Successful Cases
-                            </div>
-                            <h3 className="text-2xl font-bold text-gray-900 mb-4 font-montserrat">{t('reason1')}</h3>
-                            <p className="text-gray-600 leading-relaxed mb-6">{t('reason1Desc')}</p>
-                            <div className="h-40 bg-blue-200/50 rounded-xl overflow-hidden">
-                                <img
-                                    src={ChooseCard01}
-                                    loading='lazy'
-                                    alt="Global Network"
-                                    className="w-full h-full object-cover"
-                                />
-                            </div>
-                        </motion.div>
-
-                        {/* 卡片2 */}
-                        <motion.div
-                            className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 group"
-                            whileHover={{ y: -12 }}
-                            initial={{ opacity: 0, y: 40 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: 0.2 }}
-                        >
-                            {/* 药丸形状的标签 */}
-                            <div className="inline-block px-4 py-1.5 bg-green-200 text-green-800 rounded-full text-sm font-semibold mb-6">
-                                Data-Driven
-                            </div>
-                            <h3 className="text-2xl font-bold text-gray-900 mb-4 font-montserrat">{t('reason2')}</h3>
-                            <p className="text-gray-600 leading-relaxed mb-6">{t('reason2Desc')}</p>
-                            <div className="h-40 bg-green-200/50 rounded-xl overflow-hidden">
-                                <img
-                                    src={ChooseCard02}
-                                    loading='lazy'
-                                    alt="Data-Driven"
-                                    className="w-full h-full object-cover"
-                                />
-                            </div>
-                        </motion.div>
-
-                        {/* 卡片3 */}
-                        <motion.div
-                            className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 group"
-                            whileHover={{ y: -12 }}
-                            initial={{ opacity: 0, y: 40 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: 0.3 }}
-                        >
-                            {/* 药丸形状的标签 */}
-                            <div className="inline-block px-4 py-1.5 bg-purple-200 text-purple-800 rounded-full text-sm font-semibold mb-6">
-                                Asset accumulation
-                            </div>
-                            <h3 className="text-2xl font-bold text-gray-900 mb-4 font-montserrat">{t('reason3')}</h3>
-                            <p className="text-gray-600 leading-relaxed mb-6">{t('reason3Desc')}</p>
-                            <div className="h-40 bg-purple-200/50 rounded-xl overflow-hidden">
-                                <img
-                                    src={ChooseCard03}
-                                    loading='lazy'
-                                    alt="Full Service"
-                                    className="w-full h-full object-cover"
-                                />
-                            </div>
-                        </motion.div>
-                    </div>
-                </div>
-            </motion.section>
-
-            {/* 成功案例：合作品牌LOGO展示 */}
-            {/* 成功案例：合作品牌LOGO展示 */}
-            <motion.section
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={sectionVariants}
-                className="py-24 px-4 md:px-8 lg:px-16 bg-white font-montserrat"
-            >
-                <div className="max-w-7xl mx-auto">
-                    {/* 1. 区域标题 */}
-                    <div className="text-center mb-20">
-                        <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 font-montserrat">
-                            {t('successCases')}
-                        </h2>
-                        <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                            {t('brandsWeWorkedWith')}
-                        </p>
-                    </div>
-
-                    {/* 2. 客户展示区域 */}
-                    <div className="mb-24 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 lg:gap-12">
-                        {brandLogos.map(brand => (
-                            <div
-                                key={brand.id}
-                                className="flex items-center justify-center p-8 transition-all duration-200 hover:scale-110 opacity-70 hover:opacity-100 rounded-full cursor-pointer"
+                <section id="contact" className="w-full bg-white py-24">
+                    <div className="mx-auto max-w-[1240px] px-6">
+                        <div className="flex max-w-3xl flex-col items-start">
+                            <h2 className="mb-6 text-5xl font-extrabold uppercase leading-[1.05] text-[#111111] sm:text-6xl md:text-7xl">
+                                {language === 'zh' ? (
+                                    <>让我们<br />开始<br />合作！</>
+                                ) : (
+                                    <>LET&apos;S<br />WORK<br />TOGETHER!</>
+                                )}
+                            </h2>
+                            <p className="font-inter mb-8 max-w-2xl text-base leading-relaxed text-[#555555] sm:text-lg">
+                                {language === 'zh'
+                                    ? '准备好将您的品牌提升到新高度了吗？让我们一起创造卓越。'
+                                    : "Ready to take your brand to the next level? Let's create something extraordinary together."}
+                            </p>
+                            <Link
+                                to={`/contact?lang=${language}`}
+                                className="group inline-flex items-center gap-3 rounded-lg border border-black/80 bg-white px-7 py-3 text-sm font-bold text-[#111111] shadow-sm transition hover:-translate-y-0.5 hover:bg-gray-50 hover:shadow-md"
                             >
-                                <img
-                                    src={brand.logo}
-                                    loading='lazy'
-                                    alt={brand.name}
-                                    className="max-w-full max-h-16 object-contain filter grayscale hover:grayscale-0 transition-all duration-200"
-                                />
-                            </div>
-                        ))}
+                                <span>{language === 'zh' ? '联系我们' : 'Contact Us'}</span>
+                                <span className="material-symbols-outlined text-lg transition-transform group-hover:translate-x-1" aria-hidden="true">
+                                    arrow_forward
+                                </span>
+                            </Link>
+                        </div>
                     </div>
-
-
-                    {/* 3. 过渡区域 */}
-                    <div className="w-full h-px bg-gray-200 mb-24"></div>
-
-                    {/* 4. CTA区块（集成式，非独立部分） */}
-                    {/* 4. CTA区块（极简编辑风格） */}
-                    <div className="text-left">
-                        <h2 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold text-gray-900 mb-8 leading-tight">
-                            {i18n.language === 'zh' ? (
-                                <>
-                                    让我们<br />
-                                    开始<br />
-                                    合作！
-                                </>
-                            ) : (
-                                <>
-                                    LET'S<br />
-                                    WORK<br />
-                                    TOGETHER!
-                                </>
-                            )}
-                        </h2>
-                        <p className="text-lg text-gray-600 max-w-2xl mb-12 leading-relaxed">
-                            {i18n.language === 'zh'
-                                ? '准备好将您的品牌提升到新高度了吗？让我们一起创造卓越。'
-                                : 'Ready to take your brand to the next level? Let\'s create something extraordinary together.'}
-                        </p>
-                        <motion.button
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            onClick={handleContactNavigate}
-                            className="group relative inline-flex items-center justify-between bg-transparent text-gray-900 px-10 py-5 border-2 border-gray-900 font-medium text-lg transition-all duration-300 hover:bg-gray-900 hover:text-white"
-                        >
-                            <span>{i18n.language === 'zh' ? '联系我们' : 'Contact Us'}</span>
-                            <svg
-                                className="w-6 h-6 ml-6 transition-transform duration-300 group-hover:translate-x-2"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                            </svg>
-                        </motion.button>
-                    </div>
-
-                </div>
-            </motion.section>
-
-            {/* 页脚 */}
-            <Footer />
+                </section>
+            </main>
+            <Footer wide />
         </div>
     );
 };

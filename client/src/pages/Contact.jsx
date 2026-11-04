@@ -79,7 +79,10 @@ const Contact = ({ changeLanguage, i18n, t }) => {
 
         try {
             // 调用API发送邮件
-            const result = await sendEmail(formData);
+            const result = await sendEmail({
+                inquiryType: 'brand_contact',
+                ...formData,
+            });
 
             // 提交成功
             setSubmitStatus({

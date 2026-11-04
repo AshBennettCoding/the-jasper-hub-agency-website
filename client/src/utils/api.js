@@ -1,23 +1,29 @@
-// const API_URL = process.env.REACT_APP_API_URL || process.env.production.REACT_APP_SITE_URL || process.env.production.REACT_APP_API_URL;
+const GENERIC_SEND_ERROR = 'Unable to send your inquiry. Please try again later.';
 
 export const sendEmail = async (formData) => {
+    let response;
     try {
-        const response = await fetch(`api/contact`, {
+        response = await fetch('/api/contact', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(formData)
         });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.message || 'Failed to send email');
-        }
-
-        return data;
-    } catch (error) {
-        throw error;
+    } catch {
+        throw new Error(GENERIC_SEND_ERROR);
     }
+
+    let data;
+    try {
+        data = await response.json();
+    } catch {
+        throw new Error(GENERIC_SEND_ERROR);
+    }
+
+    if (!response.ok) {
+        throw new Error(data?.message || GENERIC_SEND_ERROR);
+    }
+
+    return data;
 };

@@ -9,6 +9,7 @@ module.exports = {
       // 配置你指定的字体（匹配图片样式）
       fontFamily: {
         montserrat: ["Montserrat", "sans-serif"], // 图片对应的字体
+        inter: ["Inter", "sans-serif"],
         gummy: ["Sour Gummy", "sans-serif"],
       },
       colors: {
