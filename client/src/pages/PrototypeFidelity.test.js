@@ -173,7 +173,8 @@ test('partnership support provides the prototype review desk and direct manager 
   expect(within(sidebar).getByRole('heading', { name: 'Jasper Talent Management Department' })).toBeVisible();
   const logo = within(sidebar).getByRole('img', { name: 'The Jasper Hub Agency logo' });
   expect(logo).toBeVisible();
-  expect(logo).toHaveClass('bg-white', 'object-contain');
+  expect(logo).toHaveClass('object-contain');
+  expect(logo.parentElement).toHaveClass('bg-white', 'rounded-full');
   expect(within(sidebar).getByRole('link', { name: 'talents@collabjasperglobal.com' })).toHaveAttribute(
     'href',
     'mailto:talents@collabjasperglobal.com'

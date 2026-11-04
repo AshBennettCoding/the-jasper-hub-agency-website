@@ -204,11 +204,13 @@ const InfluencerContact = ({ changeLanguage, i18n }) => {
                                     </span>
                                 </div>
                                 <div className="mt-4 flex items-center gap-4 font-inter text-[15px]">
-                                    <img
-                                        src={AgencyLogo}
-                                        alt={t('contactCardAlt')}
-                                        className="h-14 w-14 shrink-0 rounded-full bg-white object-contain p-1"
-                                    />
+                                    <div className="h-14 w-14 shrink-0 rounded-full bg-white p-1">
+                                        <img
+                                            src={AgencyLogo}
+                                            alt={t('contactCardAlt')}
+                                            className="h-full w-full rounded-full object-contain"
+                                        />
+                                    </div>
                                     <div className="min-w-0">
                                         <h4 className="font-montserrat text-base font-semibold leading-6">{t('contactCardName')}</h4>
                                     </div>
