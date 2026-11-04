@@ -79,7 +79,7 @@ const Contact = ({ changeLanguage, i18n, t }) => {
 
         try {
             // 调用API发送邮件
-            const result = await sendEmail({
+            await sendEmail({
                 inquiryType: 'brand_contact',
                 ...formData,
             });
@@ -87,7 +87,7 @@ const Contact = ({ changeLanguage, i18n, t }) => {
             // 提交成功
             setSubmitStatus({
                 success: true,
-                message: result.message || 'Your message has been sent successfully!'
+                message: 'contactSuccess'
             });
 
             // 重置表单
@@ -102,7 +102,7 @@ const Contact = ({ changeLanguage, i18n, t }) => {
             // 提交失败
             setSubmitStatus({
                 success: false,
-                message: error.message || 'Failed to send your message. Please try again.'
+                message: 'contactError'
             });
         } finally {
             // 结束提交状态
@@ -156,16 +156,17 @@ const Contact = ({ changeLanguage, i18n, t }) => {
                                     <form className="space-y-6" onSubmit={handleSubmit}>
                                         {/* 提交状态消息 */}
                                         {submitStatus.success !== null && (
-                                            <div className={`p-4 rounded-md ${submitStatus.success ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`}>
-                                                {submitStatus.message}
+                                            <div role={submitStatus.success ? 'status' : 'alert'} className={`p-4 rounded-md ${submitStatus.success ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`}>
+                                                {trans(submitStatus.message)}
                                             </div>
                                         )}
 
                                         {/* 第一行：姓名 | 邮箱 */}
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                             <div>
-                                                <label className="block text-gray-700 mb-2 text-sm font-medium">{trans('fullName')}</label>
+                                                <label htmlFor="brand-name" className="block text-gray-700 mb-2 text-sm font-medium">{trans('fullName')}</label>
                                                 <input
+                                                    id="brand-name"
                                                     type="text"
                                                     name="name"
                                                     value={formData.name}
@@ -176,8 +177,9 @@ const Contact = ({ changeLanguage, i18n, t }) => {
                                                 />
                                             </div>
                                             <div>
-                                                <label className="block text-gray-700 mb-2 text-sm font-medium">{trans('emailAddressLabel')}</label>
+                                                <label htmlFor="brand-email" className="block text-gray-700 mb-2 text-sm font-medium">{trans('emailAddressLabel')}</label>
                                                 <input
+                                                    id="brand-email"
                                                     type="email"
                                                     name="email"
                                                     value={formData.email}
@@ -192,8 +194,9 @@ const Contact = ({ changeLanguage, i18n, t }) => {
                                         {/* 第二行：品牌 | 电话号码（可选） */}
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                             <div>
-                                                <label className="block text-gray-700 mb-2 text-sm font-medium">{trans('brand')}</label>
+                                                <label htmlFor="brand-company" className="block text-gray-700 mb-2 text-sm font-medium">{trans('brand')}</label>
                                                 <input
+                                                    id="brand-company"
                                                     type="text"
                                                     name="company"
                                                     value={formData.company}
@@ -203,8 +206,9 @@ const Contact = ({ changeLanguage, i18n, t }) => {
                                                 />
                                             </div>
                                             <div>
-                                                <label className="block text-gray-700 mb-2 text-sm font-medium">{trans('phoneLabel')}</label>
+                                                <label htmlFor="brand-phone" className="block text-gray-700 mb-2 text-sm font-medium">{trans('phoneLabel')}</label>
                                                 <input
+                                                    id="brand-phone"
                                                     type="tel"
                                                     name="phone"
                                                     value={formData.phone}
@@ -217,8 +221,9 @@ const Contact = ({ changeLanguage, i18n, t }) => {
 
                                         {/* 留言文本域 */}
                                         <div>
-                                            <label className="block text-gray-700 mb-2 text-sm font-medium">{trans('message')}</label>
+                                            <label htmlFor="brand-message" className="block text-gray-700 mb-2 text-sm font-medium">{trans('message')}</label>
                                             <textarea
+                                                id="brand-message"
                                                 name="message"
                                                 value={formData.message}
                                                 onChange={handleChange}
@@ -235,7 +240,7 @@ const Contact = ({ changeLanguage, i18n, t }) => {
                                             disabled={isSubmitting}
                                             className="w-full border-2 border-gray-900 text-gray-900 px-8 py-4 text-lg font-medium hover:bg-gray-900 hover:text-white transition-all duration-300 flex items-center justify-between group disabled:opacity-50 disabled:cursor-not-allowed"
                                         >
-                                            <span>{isSubmitting ? 'Sending...' : trans('submit')}</span>
+                                            <span>{isSubmitting ? trans('contactSending') : trans('submit')}</span>
                                             <svg className="w-6 h-6 transform group-hover:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                                             </svg>

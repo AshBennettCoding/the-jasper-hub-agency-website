@@ -7,25 +7,25 @@ import InfluencerFAQ from '../components/InfluencerFAQ';
 import ChooseCard01 from '../assets/choose_card_01.webp';
 import ChooseCard02 from '../assets/choose_card_02.webp';
 import ChooseCard03 from '../assets/choose_card_03.webp';
-import TalentManagerPortrait from '../assets/talent-manager-marcus-vance.jpg';
+import AgencyLogo from '../assets/Agency-LOGO.png';
 
 const trustItems = [
-    ['verified_user', 'Verified Representation', 'Direct Agency Access'],
-    ['timer', '< 24-48hr Review', 'Talent Manager SLA'],
-    ['group_work', 'Creator Roster', '2026 Campaign Network'],
-    ['public', 'Global Reach', 'Cross-Border Deals'],
+    ['verified_user', 'trustVerifiedTitle', 'trustVerifiedDesc'],
+    ['timer', 'trustReviewTitle', 'trustReviewDesc'],
+    ['group_work', 'trustRosterTitle', 'trustRosterDesc'],
+    ['public', 'trustReachTitle', 'trustReachDesc'],
 ];
 
 const contactDomains = [
-    ['@thejasperhub.com', 'Corporate / Internal'],
-    ['@thejasperhub.org', 'Talent Ops'],
-    ['@collabjasperglobal.com', 'Campaign Collabs'],
+    ['@thejasperhub.com', 'domainCorporate'],
+    ['@thejasperhub.org', 'domainTalentOps'],
+    ['@collabjasperglobal.com', 'domainCampaigns'],
 ];
 
 const collaborationImages = [
-    { src: ChooseCard02, alt: 'Creative team planning a campaign together', caption: 'Creator partnerships' },
-    { src: ChooseCard01, alt: 'Business partners meeting in person', caption: 'Agency collaboration' },
-    { src: ChooseCard03, alt: 'Team sharing ideas around a campaign plan', caption: 'Global campaigns' },
+    { src: ChooseCard02, alt: 'collaborationAltCreators', caption: 'collaborationCaptionCreators' },
+    { src: ChooseCard01, alt: 'collaborationAltAgency', caption: 'collaborationCaptionAgency' },
+    { src: ChooseCard03, alt: 'collaborationAltGlobal', caption: 'collaborationCaptionGlobal' },
 ];
 
 const InfluencerContact = ({ changeLanguage, i18n }) => {
@@ -42,13 +42,13 @@ const InfluencerContact = ({ changeLanguage, i18n }) => {
                     <section className="mx-auto flex max-w-[1200px] flex-col items-center px-6 pb-12 pt-16 text-center">
                         <p className="mb-6 inline-flex items-center gap-2 rounded-full bg-[#E6F8F0] px-4 py-1.5 text-[13px] font-semibold uppercase leading-5 tracking-[0.12em] text-[#0FB97F] shadow-sm">
                             <span className="h-2 w-2 rounded-full bg-[#0FB97F]" aria-hidden="true" />
-                            Global Creator Program
+                            {t('creatorEyebrow')}
                         </p>
                         <h1 className="mb-6 max-w-4xl text-[32px] font-bold leading-[1.18] text-[#0A0A0A] sm:text-[40px]">
-                            Collaborate With The Jasper Hub Agency: <span className="text-[#0FB97F]">Global Talents &amp; Creators</span>
+                            {t('creatorTitle')}
                         </h1>
                         <p className="max-w-xl font-inter text-lg leading-relaxed text-[#4A4A4A]">
-                            We connect overseas digital creators and global talent with top-tier technology and consumer internet brands.
+                            {t('creatorDescription')}
                         </p>
                         <div className="mt-8 h-1 w-12 rounded-full bg-[#0FB97F]" aria-hidden="true" />
                     </section>
@@ -63,36 +63,36 @@ const InfluencerContact = ({ changeLanguage, i18n }) => {
                         }}
                     />
                     <div className="relative mx-auto max-w-[1200px] px-6">
-                        <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2 text-xs font-semibold text-[#3C4A42]">
-                            <a className="hover:text-[#006C48]" href={`/?lang=${language}`}>Home</a>
+                        <nav aria-label={t('breadcrumb')} className="mb-6 flex items-center gap-2 text-xs font-semibold text-[#3C4A42]">
+                            <a className="hover:text-[#006C48]" href={`/?lang=${language}`}>{t('talentBreadcrumbHome')}</a>
                             <span className="material-symbols-outlined text-[14px]" aria-hidden="true">chevron_right</span>
-                            <span>For Influencers</span>
+                            <span>{t('talentBreadcrumbAudience')}</span>
                             <span className="material-symbols-outlined text-[14px]" aria-hidden="true">chevron_right</span>
-                            <span className="font-bold text-[#006C48]" aria-current="page">Talent &amp; Agency Inquiries</span>
+                            <span className="font-bold text-[#006C48]" aria-current="page">{t('talentBreadcrumbCurrent')}</span>
                         </nav>
 
                         <div className="max-w-3xl">
                             <p className="mb-5 inline-flex items-center gap-2 rounded-full bg-[#E6F8F0] px-3.5 py-1 text-[13px] font-semibold uppercase leading-5 tracking-[0.1em] text-[#0FB97F] shadow-sm">
                                 <span className="h-2 w-2 rounded-full bg-[#0FB97F]" aria-hidden="true" />
-                                Global Talent Relations &amp; Partnerships
+                                {t('talentEyebrow')}
                             </p>
                             <h1 className="mb-4 text-[32px] font-bold leading-[1.2] text-[#0A0A0A] sm:text-[40px]">
-                                Collaborate With The Jasper Hub Agency: Talent &amp; Agency Inquiries
+                                {t('talentTitle')}
                             </h1>
                             <p className="font-inter text-lg leading-relaxed text-[#4A4A4A]">
-                                Official agency portal for creator agencies, talent management firms, managers, and independent creators seeking roster expansion, verified agency representation, and <span className="whitespace-nowrap">high-impact</span> brand partnerships.
+                                {t('talentDescription')}
                             </p>
                         </div>
 
-                        <ul aria-label="Partnership trust indicators" className="mt-10 grid grid-cols-2 gap-4 border-t border-[#EAEAEA] pt-6 sm:grid-cols-4">
+                        <ul aria-label={t('trustIndicatorsAria')} className="mt-10 grid grid-cols-2 gap-4 border-t border-[#EAEAEA] pt-6 sm:grid-cols-4">
                             {trustItems.map(([icon, title, description]) => (
                                 <li key={title} className="flex items-center gap-3">
                                     <span className="material-symbols-outlined text-2xl text-[#0FB97F]" aria-hidden="true">
                                         {icon}
                                     </span>
                                     <span>
-                                        <span className="block text-sm font-bold text-[#111111]">{title}</span>
-                                        <span className="font-inter block text-[13px] leading-5 text-[#8A8A8A]">{description}</span>
+                                        <span className="block text-sm font-bold text-[#111111]">{t(title)}</span>
+                                        <span className="font-inter block text-[13px] leading-5 text-[#8A8A8A]">{t(description)}</span>
                                     </span>
                                 </li>
                             ))}
@@ -111,11 +111,11 @@ const InfluencerContact = ({ changeLanguage, i18n }) => {
                                     </span>
                                     <div className="flex min-w-0 flex-col gap-1.5">
                                         <div className="flex flex-wrap items-center gap-2">
-                                            <h2 className="text-xl font-bold leading-snug text-[#0A0A0A]">Official Verification &amp; Security Advisory</h2>
-                                            <span className="rounded bg-[#E6F8F0] px-2 py-0.5 text-[11px] font-bold uppercase leading-6 text-[#0FB97F]">Verified</span>
+                                        <h2 className="text-xl font-bold leading-snug text-[#0A0A0A]">{t('creatorAuthTitle')}</h2>
+                                            <span className="rounded bg-[#E6F8F0] px-2 py-0.5 text-[11px] font-bold uppercase leading-6 text-[#0FB97F]">{t('creatorAuthBadge')}</span>
                                         </div>
                                         <p className="font-inter text-[15px] leading-relaxed text-[#4A4A4A]">
-                                            <strong className="font-semibold text-[#0A0A0A]">@thejasperhub.com</strong> is our main email domain for internal team communication and brand partnership inquiries. For creator collaborations, our team primarily uses <strong className="font-semibold text-[#0A0A0A]">@thejasperhub.org</strong> and <strong className="font-semibold text-[#0A0A0A]">@collabjasperglobal.com</strong>. If you are unsure whether a message is genuine, forward it to <a className="font-semibold text-[#0FB97F] underline decoration-[#0FB97F]/40 underline-offset-4 hover:text-[#0CA06E]" href="mailto:info@thejasperhub.com">info@thejasperhub.com</a> for confirmation.
+                                            {t('creatorAuthDescription')}
                                         </p>
                                     </div>
                                 </div>
@@ -128,23 +128,23 @@ const InfluencerContact = ({ changeLanguage, i18n }) => {
                                 </span>
                                 <div className="min-w-0">
                                     <div className="flex flex-wrap items-center gap-2">
-                                        <h2 className="text-base font-semibold text-[#111111]">Official Domain Authenticity Notice</h2>
+                                    <h2 className="text-base font-semibold text-[#111111]">{t('authTitle')}</h2>
                                         <span className="rounded-full bg-[#0FB97F] px-2 py-0.5 text-[10px] font-semibold leading-6 uppercase text-white">
-                                            Verified Protocols
+                                            {t('authBadge')}
                                         </span>
                                     </div>
                                     <p className="font-inter mt-1 text-[13px] leading-5 text-[#4A4A4A]">
-                                        To safeguard talent agencies, creator managers, and talent partners, all official correspondence is issued strictly through our authenticated namespaces. Beware of impersonators.
+                                        {t('authDescription')}
                                     </p>
                                 </div>
                             </div>
                             <div className="flex min-w-0 flex-col items-start gap-2.5">
-                                <ul aria-label="Verified email domains" className="flex w-full min-w-0 flex-col items-start gap-2.5">
+                                <ul aria-label={t('verifiedDomainsAria')} className="flex w-full min-w-0 flex-col items-start gap-2.5">
                                     {contactDomains.map(([domain, purpose]) => (
                                         <li key={domain} className="flex max-w-full flex-wrap items-center gap-x-2 rounded-lg bg-[#EEF6EE] px-3.5 py-2">
                                             <span className="h-2 w-2 shrink-0 rounded-full bg-[#0FB97F]" aria-hidden="true" />
                                             <span className="whitespace-nowrap font-['Courier_New',monospace] text-xs font-semibold leading-4 text-[#0A0A0A]">{domain}</span>
-                                            <span className="font-inter pl-1 text-[11px] leading-6 text-[#8A8A8A]">{purpose}</span>
+                                            <span className="font-inter pl-1 text-[11px] leading-6 text-[#8A8A8A]">{t(purpose)}</span>
                                         </li>
                                     ))}
                                 </ul>
@@ -153,7 +153,7 @@ const InfluencerContact = ({ changeLanguage, i18n }) => {
                                     href="mailto:info@thejasperhub.com"
                                 >
                                     <span className="material-symbols-outlined text-[16px] leading-4" aria-hidden="true">contact_support</span>
-                                    Hotline: info@thejasperhub.com
+                                    {t('hotline')}
                                 </a>
                             </div>
                         </div>
@@ -161,76 +161,68 @@ const InfluencerContact = ({ changeLanguage, i18n }) => {
                     </div>
                 </section>
 
-                <section aria-label="Creator and talent inquiry form" className={isCreator ? 'w-full pb-24' : 'w-full bg-[#F4FBF4] py-16'}>
+                <section aria-label={t('inquiryFormAria')} className={isCreator ? 'w-full pb-24' : 'w-full bg-[#F4FBF4] py-16'}>
                     <div className={isCreator ? 'mx-auto max-w-[880px] px-6' : 'mx-auto grid max-w-[1200px] grid-cols-1 items-start gap-8 px-6 lg:grid-cols-12'}>
                         <div className={isCreator ? 'rounded-xl bg-white p-8 shadow-[0_12px_40px_rgba(0,0,0,0.05)] sm:p-12' : 'rounded-2xl bg-white p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] md:p-10 lg:col-span-8'}>
                             <CreatorInquiryForm inquiryType={inquiryType} onInquiryTypeChange={setInquiryType} />
                         </div>
-                        {!isCreator && <aside aria-label="Partnership support" className="flex min-w-0 flex-col gap-6 lg:col-span-4">
+                        {!isCreator && <aside aria-label={t('partnershipSupportAria')} className="flex min-w-0 flex-col gap-6 lg:col-span-4">
                             <section className="relative overflow-hidden rounded-2xl bg-white p-8 shadow-[0_4px_24px_rgba(0,0,0,0.03)]">
                                 <div className="mb-4 flex items-center gap-3">
                                     <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#E6F8F0] text-[#0FB97F]">
                                         <span className="material-symbols-outlined text-xl" aria-hidden="true">handshake</span>
                                     </span>
                                     <div>
-                                        <h3 className="text-base font-semibold leading-6 text-[#0A0A0A]">Talent Partnership Desk</h3>
-                                        <span className="text-xs font-bold leading-5 text-[#0FB97F]">24-48h Review SLA</span>
+                                        <h3 className="text-base font-semibold leading-6 text-[#0A0A0A]">{t('talentDeskTitle')}</h3>
+                                        <span className="text-xs font-bold leading-5 text-[#0FB97F]">{t('talentDeskSla')}</span>
                                     </div>
                                 </div>
                                 <p className="font-inter mb-6 text-[13px] leading-relaxed text-[#4A4A4A]">
-                                    Agencies and managers receive dedicated review priority. Our talent liaisons coordinate across London, Hong Kong, and San Francisco to evaluate roster synergy and brand alignment.
+                                    {t('talentDeskDescription')}
                                 </p>
                                 <dl className="space-y-2 rounded-xl bg-[#EEF6EE] p-4 font-inter text-xs leading-4 text-[#4A4A4A]">
                                     <div className="flex items-center justify-between">
-                                        <dt className="font-montserrat font-semibold text-[#8A8A8A]">Talent Agency Inquiries:</dt>
-                                        <dd className="font-medium text-[#0A0A0A]">Within 24 Hours</dd>
+                                        <dt className="font-montserrat font-semibold text-[#8A8A8A]">{t('talentAgencyInquiries')}</dt>
+                                        <dd className="font-medium text-[#0A0A0A]">{t('within24Hours')}</dd>
                                     </div>
                                     <div className="flex items-center justify-between border-t border-[#E8F0E8] pt-1">
-                                        <dt className="font-montserrat font-semibold text-[#8A8A8A]">Management Roster Review:</dt>
-                                        <dd className="font-medium text-[#006C48]">24–48 Hours</dd>
+                                        <dt className="font-montserrat font-semibold text-[#8A8A8A]">{t('rosterReview')}</dt>
+                                        <dd className="font-medium text-[#006C48]">{t('hours24to48')}</dd>
                                     </div>
                                     <div className="flex items-center justify-between border-t border-[#E8F0E8] pt-1">
-                                        <dt className="font-montserrat font-semibold text-[#8A8A8A]">Campaign Brand Collab:</dt>
-                                        <dd className="font-medium text-[#0A0A0A]">Direct Talent Manager Sync</dd>
+                                        <dt className="font-montserrat font-semibold text-[#8A8A8A]">{t('campaignCollab')}</dt>
+                                        <dd className="font-medium text-[#0A0A0A]">{t('directManagerSync')}</dd>
                                     </div>
                                 </dl>
                             </section>
                             <section className="rounded-2xl bg-[#0A0A0A] p-8 text-white shadow-lg">
                                 <div className="flex items-center justify-between gap-2">
-                                    <h3 className="text-[11px] font-bold uppercase leading-6 tracking-[0.1em] text-[#6FFCBC]">Direct Talent Manager</h3>
+                                    <h3 className="text-[11px] font-bold uppercase leading-6 tracking-[0.1em] text-[#6FFCBC]">{t('contactCardLabel')}</h3>
                                     <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-[#DDE4DD]/10 px-2 py-0.5 text-[11px] font-semibold leading-6 text-[#0FB97F]">
                                         <span className="h-1.5 w-1.5 rounded-full bg-[#0FB97F]" aria-hidden="true" />
-                                        Available
+                                        {t('contactCardStatus')}
                                     </span>
                                 </div>
                                 <div className="mt-4 flex items-center gap-4 font-inter text-[15px]">
                                     <img
-                                        src={TalentManagerPortrait}
-                                        alt="Marcus Vance, Director of Talent Partnerships"
-                                        className="h-14 w-14 shrink-0 rounded-full object-cover"
+                                        src={AgencyLogo}
+                                        alt={t('contactCardAlt')}
+                                        className="h-14 w-14 shrink-0 rounded-full bg-white object-contain p-1"
                                     />
                                     <div className="min-w-0">
-                                        <h4 className="font-montserrat text-base font-semibold leading-6">Marcus Vance</h4>
-                                        <p className="text-xs leading-4 text-[#8A8A8A]">Director of Talent Partnerships</p>
-                                        <span className="text-[11px] leading-6 text-[#6FFCBC]">Jasper Hub Creator Operations Secretariat</span>
+                                        <h4 className="font-montserrat text-base font-semibold leading-6">{t('contactCardName')}</h4>
                                     </div>
                                 </div>
                                 <div className="font-inter mt-6 space-y-2.5 border-t border-white/10 pt-5 text-xs leading-4 text-[#8A8A8A]">
                                     <div className="flex items-center gap-2.5">
                                         <span className="material-symbols-outlined text-base text-[#6FFCBC]" aria-hidden="true">mail</span>
-                                        <a className="break-all transition-colors hover:text-[#6FFCBC] focus:text-[#6FFCBC]" href="mailto:talent@thejasperhub.com">
-                                            talent@thejasperhub.com
-                                        </a>
-                                    </div>
-                                    <div className="flex items-center gap-2.5">
-                                        <span className="material-symbols-outlined text-base text-[#6FFCBC]" aria-hidden="true">phone_iphone</span>
-                                        <a className="transition-colors hover:text-[#6FFCBC] focus:text-[#6FFCBC]" href="tel:+85239058120;ext=402">
-                                            +852 3905 8120 (Ext. 402)
+                                        <a className="break-all transition-colors hover:text-[#6FFCBC] focus:text-[#6FFCBC]" href="mailto:talents@collabjasperglobal.com">
+                                            talents@collabjasperglobal.com
                                         </a>
                                     </div>
                                     <div className="flex items-center gap-2.5">
                                         <span className="material-symbols-outlined text-base text-[#6FFCBC]" aria-hidden="true">schedule</span>
-                                        <span>Mon – Fri, 08:00 – 20:00 HKT / GMT+8</span>
+                                        <span>{t('contactCardHours')}</span>
                                     </div>
                                 </div>
                             </section>
@@ -242,24 +234,24 @@ const InfluencerContact = ({ changeLanguage, i18n }) => {
                     <section aria-labelledby="industry-citations-heading" className="bg-white py-16">
                         <div className="mx-auto max-w-[1200px] px-6">
                             <div className="mx-auto mb-12 max-w-xl text-center">
-                                <p className="mb-3 text-[13px] font-semibold uppercase tracking-[0.12em] text-[#006C48]">Industry Citations</p>
-                                <h2 id="industry-citations-heading" className="text-[28px] font-bold leading-9 text-[#0A0A0A]">Trusted By Leading Agencies &amp; Creators</h2>
-                                <p className="mt-3 font-inter text-[15px] leading-6 text-[#4A4A4A]">Connecting brands and creators through global influencer marketing partnerships.</p>
+                                <p className="mb-3 text-[13px] font-semibold uppercase tracking-[0.12em] text-[#006C48]">{t('industryCitations')}</p>
+                                <h2 id="industry-citations-heading" className="text-[28px] font-bold leading-9 text-[#0A0A0A]">{t('industryTitle')}</h2>
+                                <p className="mt-3 font-inter text-[15px] leading-6 text-[#4A4A4A]">{t('industryDescription')}</p>
                             </div>
                             <div className="grid gap-6 md:grid-cols-3">
                                 {[
-                                    ['Brand Partnerships', '100+', 'Brands Served', 'Experience connecting brands with global audiences.', 'text-[#0FB97F] bg-[#E6F8F0]', 'monitoring'],
-                                    ['Global Collaboration', 'Cross-Border', 'Creator Partnerships', 'Connecting international creators and brand campaigns.', 'text-[#1A73E8] bg-[#E8F0FE]', 'public'],
-                                    ['Official Verification', 'Verified', 'Official Email Domains', 'Confirm agency correspondence through our official contact desk.', 'text-[#8430D9] bg-[#F3E8FD]', 'verified'],
+                                    ['industryBadgeBrands', 'industryValueBrands', 'industryTitleBrands', 'industryDescBrands', 'text-[#0FB97F] bg-[#E6F8F0]', 'monitoring'],
+                                    ['industryBadgeGlobal', 'industryValueGlobal', 'industryTitleGlobal', 'industryDescGlobal', 'text-[#1A73E8] bg-[#E8F0FE]', 'public'],
+                                    ['industryBadgeVerified', 'industryValueVerified', 'industryTitleVerified', 'industryDescVerified', 'text-[#8430D9] bg-[#F3E8FD]', 'verified'],
                                 ].map(([badge, value, title, description, color, icon]) => (
                                     <article key={title} className="rounded-2xl bg-[#F4FBF4] p-6">
                                         <div className="mb-4 flex items-center justify-between gap-2">
-                                            <span className={`rounded-full px-3 py-1 text-[11px] font-semibold ${color}`}>{badge}</span>
+                                            <span className={`rounded-full px-3 py-1 text-[11px] font-semibold ${color}`}>{t(badge)}</span>
                                             <span className={`material-symbols-outlined text-2xl ${color.split(' ')[0]}`} aria-hidden="true">{icon}</span>
                                         </div>
-                                        <p className="text-[32px] font-extrabold leading-10 text-[#0A0A0A]">{value}</p>
-                                        <h3 className="mt-1 text-sm font-bold">{title}</h3>
-                                        <p className="mt-1 font-inter text-xs leading-5 text-[#8A8A8A]">{description}</p>
+                                        <p className="text-[32px] font-extrabold leading-10 text-[#0A0A0A]">{t(value)}</p>
+                                        <h3 className="mt-1 text-sm font-bold">{t(title)}</h3>
+                                        <p className="mt-1 font-inter text-xs leading-5 text-[#8A8A8A]">{t(description)}</p>
                                     </article>
                                 ))}
                             </div>
@@ -276,12 +268,12 @@ const InfluencerContact = ({ changeLanguage, i18n }) => {
                                 <figure key={src} className="group relative overflow-hidden rounded-2xl shadow-sm">
                                     <img
                                         src={src}
-                                        alt={alt}
+                                        alt={t(alt)}
                                         loading="lazy"
                                         className="h-56 w-full object-cover transition-transform duration-500 group-hover:scale-105"
                                     />
                                     <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#0A0A0A]/80 to-transparent p-5 pt-12 text-xs font-semibold text-white">
-                                        {caption}
+                                        {t(caption)}
                                     </figcaption>
                                 </figure>
                             ))}
@@ -293,24 +285,26 @@ const InfluencerContact = ({ changeLanguage, i18n }) => {
                     <div className="mx-auto max-w-[1200px] px-6">
                         <div className="max-w-2xl">
                             <h2 className="text-5xl font-extrabold uppercase leading-none text-[#0A0A0A] sm:text-6xl">
-                                LET&apos;S<br />WORK<br />TOGETHER!
+                                {t('homeCtaLine1')}<br />
+                                {t('homeCtaLine2')}<br />
+                                {t('homeCtaLine3')}
                             </h2>
                             <p className="font-inter mt-6 max-w-lg text-base leading-7 text-[#4A4A4A] sm:text-lg">
-                                Ready to discuss creator representation or a talent partnership? Contact The Jasper Hub Agency.
+                                {t('talentCtaDescription')}
                             </p>
                             <div className="mt-8 flex flex-wrap items-center gap-4">
                             <a
                                 className="group inline-flex min-h-12 items-center gap-3 rounded-full border-2 border-[#111111] px-8 py-3 text-sm font-semibold text-[#111111] transition-colors hover:bg-[#111111] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#0FB97F] focus:ring-offset-2"
                                 href="#inquiry-type"
                             >
-                                <span>Contact Us</span>
+                                <span>{t('talentCtaContact')}</span>
                                 <span className="material-symbols-outlined text-lg transition-transform group-hover:translate-x-1" aria-hidden="true">
                                     arrow_forward
                                 </span>
                             </a>
                             <a className="inline-flex min-h-12 items-center gap-2 rounded-full bg-[#E7F8F2] px-6 py-3 text-sm font-semibold text-[#006C48] hover:bg-[#D2F3E5]" href="mailto:info@thejasperhub.com">
                                 <span className="material-symbols-outlined text-lg" aria-hidden="true">mail</span>
-                                Talent Collab Desk
+                                {t('talentCtaEmail')}
                             </a>
                             </div>
                         </div>

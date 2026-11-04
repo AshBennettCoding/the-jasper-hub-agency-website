@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { sendEmail } from '../utils/api';
 
 const platforms = ['TikTok', 'YouTube', 'Instagram', 'Twitter / X', 'Twitch', 'Other'];
@@ -14,6 +15,16 @@ const contentCategories = [
     'Other',
 ];
 const referralSources = ['Social media', 'Online search', 'Referral', 'Other'];
+const countries = [
+    ['United States', 'countryUS'],
+    ['United Kingdom', 'countryUK'],
+    ['Canada', 'countryCanada'],
+    ['Australia', 'countryAustralia'],
+    ['Germany', 'countryGermany'],
+    ['Singapore', 'countrySingapore'],
+    ['Japan', 'countryJapan'],
+    ['Other', 'countryOther'],
+];
 const fieldIcons = {
     name: 'badge',
     email: 'mail',
@@ -31,6 +42,28 @@ const channelColors = {
     'Twitter / X': 'bg-[#0A0A0A]',
     Twitch: 'bg-[#8430D9]',
     Other: 'bg-[#5F5E5E]',
+};
+
+const optionLabelKeys = {
+    TikTok: 'platformTikTok',
+    YouTube: 'platformYouTube',
+    Instagram: 'platformInstagram',
+    'Twitter / X': 'platformTwitter',
+    Twitch: 'platformTwitch',
+    Other: 'platformOther',
+    'Talent Agency': 'roleAgency',
+    'Management Company': 'roleManagement',
+    'Creator / Influencer': 'roleCreator',
+    'Beauty & Fashion': 'categoryBeauty',
+    Entertainment: 'categoryEntertainment',
+    Food: 'categoryFood',
+    Gaming: 'categoryGaming',
+    Lifestyle: 'categoryLifestyle',
+    Technology: 'categoryTechnology',
+    Travel: 'categoryTravel',
+    'Social media': 'referralSocial',
+    'Online search': 'referralSearch',
+    Referral: 'referralReferral',
 };
 
 const emptyValues = () => ({
@@ -61,9 +94,9 @@ const textField = (name, label, value, onChange, options = {}) => {
                 <span>
                     {label}
                     {options.required && <span aria-hidden="true" className="text-[#BA1A1A]"> *</span>}
-                    {options.inlineOptional && <span className="text-xs font-normal text-[#8A8A8A]"> (optional)</span>}
+                    {options.inlineOptional && <span className="text-xs font-normal text-[#8A8A8A]"> ({options.optionalLabel || 'optional'})</span>}
                 </span>
-                {options.optional && <span aria-hidden="true" className="font-inter text-[13px] font-normal text-[#8A8A8A]">Optional</span>}
+                {options.optional && <span aria-hidden="true" className="font-inter text-[13px] font-normal text-[#8A8A8A]">{options.optionalLabel || 'Optional'}</span>}
             </label>
             {options.textarea ? (
                 <textarea
@@ -148,6 +181,7 @@ const buildInquiryPayload = (inquiryType, values) => {
 };
 
 const CreatorInquiryForm = ({ inquiryType, onInquiryTypeChange }) => {
+    const { t } = useTranslation();
     const isCreator = inquiryType === 'creator_representation';
     const [values, setValues] = useState(emptyValues);
     const [status, setStatus] = useState(null);
@@ -205,7 +239,7 @@ const CreatorInquiryForm = ({ inquiryType, onInquiryTypeChange }) => {
         event.preventDefault();
         if (!inquiryType) return;
         if (inquiryType === 'creator_representation' && values.selectedPlatforms.length === 0) {
-            setPlatformError('Select at least one platform to continue.');
+            setPlatformError('formPlatformError');
             platformsRef.current?.focus();
             return;
         }
@@ -214,16 +248,16 @@ const CreatorInquiryForm = ({ inquiryType, onInquiryTypeChange }) => {
         setIsSubmitting(true);
         setStatus(null);
         try {
-            const result = await sendEmail(buildInquiryPayload(inquiryType, values));
-            const successMessage = inquiryType === 'partner_inquiry'
-                ? 'Creator Partnership / Talent Collaboration Inquiry sent successfully.'
-                : result.message || 'Your inquiry has been sent successfully.';
-            setStatus({ success: true, message: successMessage });
+            await sendEmail(buildInquiryPayload(inquiryType, values));
+            setStatus({
+                success: true,
+                messageKey: inquiryType === 'partner_inquiry' ? 'formPartnerSuccess' : 'formCreatorSuccess',
+            });
             setValues(emptyValues());
         } catch (error) {
             setStatus({
                 success: false,
-                message: error.message || 'Unable to send your inquiry. Please try again later.',
+                messageKey: 'formError',
             });
         } finally {
             setIsSubmitting(false);
@@ -241,21 +275,21 @@ const CreatorInquiryForm = ({ inquiryType, onInquiryTypeChange }) => {
                 : 'flex flex-col gap-4 border-b border-[#E8F0E8] pb-6 sm:flex-row sm:items-center sm:justify-between'}>
                 <div>
                     <p className={`text-[13px] font-bold uppercase tracking-[0.12em] ${isCreator ? 'leading-5 text-[#0FB97F]' : 'leading-6 text-[#006C48]'}`}>
-                        {isCreator ? 'Step 1 of 1' : 'Inquiry Routing'}
+                        {isCreator ? t('formStep') : t('formRouting')}
                     </p>
                     <h2 className="mt-1 text-[28px] font-bold leading-9 text-[#0A0A0A]">
-                        {isCreator ? 'Creator Representation Application' : 'Creator Partnership & Talent Dispatch'}
+                        {isCreator ? t('formCreatorTitle') : t('formPartnerTitle')}
                     </h2>
                 </div>
                 {!isCreator && <span className="hidden w-fit items-center gap-2 rounded-full bg-[#E6F8F0] px-3 py-1.5 text-xs font-semibold text-[#0FB97F] sm:inline-flex">
                     <span className="material-symbols-outlined text-base" aria-hidden="true">hub</span>
-                    Talent Partnership Desk Active
+                    {t('formDeskActive')}
                 </span>}
             </div>
             <div className={isCreator ? undefined : '!mt-8'}>
                 <label htmlFor="inquiry-type" className="flex flex-wrap items-center justify-between gap-x-3 text-sm font-semibold leading-5 text-[#0A0A0A]">
-                    <span>How can we best help you? <span aria-hidden="true" className="text-[#BA1A1A]">*</span></span>
-                    {isCreator && <span aria-hidden="true" className="font-inter text-[13px] font-normal text-[#8A8A8A]">Target Objective</span>}
+                    <span>{t('formHelpLabel')} <span aria-hidden="true" className="text-[#BA1A1A]">*</span></span>
+                    {isCreator && <span aria-hidden="true" className="font-inter text-[13px] font-normal text-[#8A8A8A]">{t('formTargetObjective')}</span>}
                 </label>
                 <div className="relative mt-2">
                     <select
@@ -266,29 +300,29 @@ const CreatorInquiryForm = ({ inquiryType, onInquiryTypeChange }) => {
                         aria-describedby="inquiry-type-help"
                         className={`${isCreator ? `${creatorInputClass} !h-[52px]` : inputClass} !mt-0 cursor-pointer appearance-none pr-12`}
                     >
-                        <option value="">Select an inquiry type</option>
-                        <option value="creator_representation">I am a creator looking for representation</option>
-                        <option value="partner_inquiry">Press Inquiries</option>
+                        <option value="">{t('formSelectType')}</option>
+                        <option value="creator_representation">{t('formCreatorOption')}</option>
+                        <option value="partner_inquiry">{t('formPartnerOption')}</option>
                     </select>
                     <span className="material-symbols-outlined pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#3C4A42]" aria-hidden="true">
                         expand_more
                     </span>
                 </div>
                 <p id="inquiry-type-help" className={isCreator ? 'sr-only' : 'font-inter mt-2 text-xs leading-4 text-[#8A8A8A]'}>
-                    For talent agencies, management companies, creator managers, and collaborative talent rosters.
+                    {t('formTypeHelp')}
                 </p>
             </div>
 
             {inquiryType === 'creator_representation' && (
-                <section aria-label="Creator representation details" className="space-y-8">
+                <section aria-label={t('formCreatorRegion')} className="space-y-8">
                     <div className="grid gap-x-6 gap-y-8 sm:grid-cols-2">
-                        {textField('name', 'Full Name', values.name, updateValue, {
+                        {textField('name', t('formFullName'), values.name, updateValue, {
                             required: true,
                             autoComplete: 'name',
                             icon: null,
                             inputClassName: creatorInputClass,
                         })}
-                        {textField('email', 'Email Address', values.email, updateValue, {
+                        {textField('email', t('formEmail'), values.email, updateValue, {
                             required: true,
                             type: 'email',
                             autoComplete: 'email',
@@ -297,7 +331,7 @@ const CreatorInquiryForm = ({ inquiryType, onInquiryTypeChange }) => {
                         })}
                         <div>
                             <label htmlFor="country" className="block text-sm font-semibold leading-5 text-[#0A0A0A]">
-                                Country / Region <span aria-hidden="true" className="text-[#BA1A1A]">*</span>
+                                {t('formCountry')} <span aria-hidden="true" className="text-[#BA1A1A]">*</span>
                             </label>
                             <div className="relative mt-2">
                                 <select
@@ -308,17 +342,10 @@ const CreatorInquiryForm = ({ inquiryType, onInquiryTypeChange }) => {
                                     required
                                     className={`${creatorInputClass} !mt-0 cursor-pointer appearance-none pr-12`}
                                 >
-                                    <option value="">Select a country or region</option>
-                                    {[
-                                        'United States',
-                                        'United Kingdom',
-                                        'Canada',
-                                        'Australia',
-                                        'Germany',
-                                        'Singapore',
-                                        'Japan',
-                                        'Other',
-                                    ].map((country) => <option key={country}>{country}</option>)}
+                                    <option value="">{t('formSelectCountry')}</option>
+                                    {countries.map(([country, labelKey]) => (
+                                        <option key={country} value={country}>{t(labelKey)}</option>
+                                    ))}
                                 </select>
                                 <span className="material-symbols-outlined pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#3C4A42]" aria-hidden="true">
                                     expand_more
@@ -327,12 +354,12 @@ const CreatorInquiryForm = ({ inquiryType, onInquiryTypeChange }) => {
                         </div>
                         <fieldset aria-labelledby="representation-status-label" className="min-w-0">
                             <legend id="representation-status-label" className="text-sm font-semibold leading-5 text-[#0A0A0A]">
-                                Are you currently represented? <span aria-hidden="true" className="text-[#BA1A1A]">*</span>
+                                {t('formRepresented')} <span aria-hidden="true" className="text-[#BA1A1A]">*</span>
                             </legend>
                             <div className="mt-2 flex h-12 items-center gap-1 rounded-lg bg-[#EEF6EE] p-1 ring-1 ring-[#BBCABF]/30">
                                 {[
-                                    { value: 'yes', label: 'Yes' },
-                                    { value: 'no', label: 'No' },
+                                    { value: 'yes', label: t('formYes') },
+                                    { value: 'no', label: t('formNo') },
                                 ].map(({ value, label }) => (
                                     <label
                                         key={value}
@@ -362,11 +389,11 @@ const CreatorInquiryForm = ({ inquiryType, onInquiryTypeChange }) => {
                     </div>
 
                     {values.representationStatus === 'yes' && (
-                        textField('agencyName', 'Agency Name', values.agencyName, updateValue, {
+                        textField('agencyName', t('formAgencyName'), values.agencyName, updateValue, {
                             required: true,
                             icon: null,
                             inputClassName: creatorInputClass,
-                            placeholder: 'Name of your management agency or representative',
+                            placeholder: t('formAgencyPlaceholder'),
                         })
                     )}
 
@@ -377,8 +404,8 @@ const CreatorInquiryForm = ({ inquiryType, onInquiryTypeChange }) => {
                         className="space-y-3 outline-none"
                     >
                         <legend className="flex w-full flex-wrap items-center justify-between gap-x-3 text-sm font-semibold leading-5 text-[#0A0A0A]">
-                            <span>Where&apos;s your audience? <span aria-hidden="true" className="text-[#BA1A1A]">*</span></span>
-                            <span aria-hidden="true" className="font-inter text-[13px] font-normal text-[#8A8A8A]">Select all active channels</span>
+                            <span>{t('formAudience')} <span aria-hidden="true" className="text-[#BA1A1A]">*</span></span>
+                            <span aria-hidden="true" className="font-inter text-[13px] font-normal text-[#8A8A8A]">{t('formActiveChannels')}</span>
                         </legend>
                         <div className="flex flex-wrap gap-2.5">
                             {platforms.map((platform) => (
@@ -399,23 +426,23 @@ const CreatorInquiryForm = ({ inquiryType, onInquiryTypeChange }) => {
                                         {values.selectedPlatforms.includes(platform) && (
                                             <span className="material-symbols-outlined text-base leading-5" aria-hidden="true">check</span>
                                         )}
-                                        {platform}
+                                        {t(optionLabelKeys[platform])}
                                     </label>
                             ))}
                         </div>
                         {platformError && (
                             <p id="platform-error" role="alert" className="text-sm text-red-700">
-                                {platformError}
+                                {t(platformError)}
                             </p>
                         )}
                     </fieldset>
 
                     {values.selectedPlatforms.length > 0 && (
                         <fieldset className="min-w-0 rounded-xl bg-[#EEF6EE]/70 p-6 sm:p-7">
-                            <legend className="sr-only">Selected Channel Metrics</legend>
+                            <legend className="sr-only">{t('formSelectedMetrics')}</legend>
                             <p aria-hidden="true" className="mb-6 flex items-center gap-2 text-sm font-bold text-[#0A0A0A]">
-                                <span className="material-symbols-outlined text-xl leading-5 text-[#0FB97F]">insights</span>
-                                Selected Channel Metrics
+                                <span className="material-symbols-outlined text-xl leading-5 text-[#0FB97F]" aria-hidden="true">insights</span>
+                                {t('formSelectedMetrics')}
                             </p>
                             <div className="space-y-6">
                     {values.selectedPlatforms.map((platform) => {
@@ -425,7 +452,7 @@ const CreatorInquiryForm = ({ inquiryType, onInquiryTypeChange }) => {
                             <div key={platform} className="space-y-4">
                                 {platform === 'Other' && (
                                     <label htmlFor="other-platform-name" className="block text-sm font-semibold leading-5 text-[#0A0A0A]">
-                                        Platform Name <span aria-hidden="true" className="text-[#BA1A1A]">*</span>
+                                        {t('formPlatformName')} <span aria-hidden="true" className="text-[#BA1A1A]">*</span>
                                         <input
                                             id="other-platform-name"
                                             value={detail.platformName || ''}
@@ -438,28 +465,28 @@ const CreatorInquiryForm = ({ inquiryType, onInquiryTypeChange }) => {
                                 <div className="grid gap-4 sm:grid-cols-12 sm:items-center">
                                     <div className="flex items-center gap-2 sm:col-span-3">
                                         <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${channelColors[platform]}`} aria-hidden="true" />
-                                        <span className="text-xl font-bold leading-7 text-[#0A0A0A]">{platform === 'Other' ? 'Other Channel' : platform}</span>
+                                        <span className="text-xl font-bold leading-7 text-[#0A0A0A]">{platform === 'Other' ? t('formOtherChannel') : t(optionLabelKeys[platform])}</span>
                                     </div>
                                     <label htmlFor={`${prefix}-profile-url`} className="block min-w-0 sm:col-span-5">
-                                        <span className="sr-only">{platform} Profile URL *</span>
+                                        <span className="sr-only">{t(optionLabelKeys[platform])} {t('formProfileUrl')} *</span>
                                         <input
                                             id={`${prefix}-profile-url`}
                                             type="url"
                                             value={detail.profileUrl || ''}
                                             onChange={(event) => updatePlatformDetail(platform, 'profileUrl', event.target.value)}
                                             required
-                                            placeholder={platform === 'Instagram' ? 'Instagram Profile URL' : 'Channel URL'}
+                                            placeholder={platform === 'Instagram' ? `${t('platformInstagram')} ${t('formProfileUrl')}` : t('formChannelUrl')}
                                             className="h-11 w-full rounded-lg bg-white px-3.5 font-inter text-[13px] text-[#0A0A0A] shadow-sm outline-none ring-1 ring-[#BBCABF]/30 focus:ring-2 focus:ring-[#0FB97F]"
                                         />
                                     </label>
                                     <label htmlFor={`${prefix}-audience-size`} className="block min-w-0 sm:col-span-4">
-                                        <span className="sr-only">Audience Size *</span>
+                                        <span className="sr-only">{t('formAudienceSize')} *</span>
                                         <input
                                             id={`${prefix}-audience-size`}
                                             value={detail.audienceSize || ''}
                                             onChange={(event) => updatePlatformDetail(platform, 'audienceSize', event.target.value)}
                                             required
-                                            placeholder="Audience Size"
+                                            placeholder={t('formAudienceSize')}
                                             className="h-11 w-full rounded-lg bg-white px-3.5 font-inter text-[13px] text-[#0A0A0A] shadow-sm outline-none ring-1 ring-[#BBCABF]/30 focus:ring-2 focus:ring-[#0FB97F]"
                                         />
                                     </label>
@@ -474,7 +501,7 @@ const CreatorInquiryForm = ({ inquiryType, onInquiryTypeChange }) => {
                     <div className="space-y-8">
                         <div>
                             <label htmlFor="primaryContent" className="block text-sm font-semibold leading-5 text-[#0A0A0A]">
-                                Primary Content Category <span aria-hidden="true" className="text-[#BA1A1A]">*</span>
+                                {t('formPrimaryCategory')} <span aria-hidden="true" className="text-[#BA1A1A]">*</span>
                             </label>
                             <div className="relative mt-2">
                                 <select
@@ -485,8 +512,10 @@ const CreatorInquiryForm = ({ inquiryType, onInquiryTypeChange }) => {
                                     required
                                     className={`${creatorInputClass} !mt-0 cursor-pointer appearance-none pr-12`}
                                 >
-                                    <option value="">Select a category</option>
-                                    {contentCategories.map((category) => <option key={category}>{category}</option>)}
+                                    <option value="">{t('formSelectCategory')}</option>
+                                    {contentCategories.map((category) => (
+                                        <option key={category} value={category}>{t(category === 'Other' ? 'categoryOther' : optionLabelKeys[category])}</option>
+                                    ))}
                                 </select>
                                 <span className="material-symbols-outlined pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#3C4A42]" aria-hidden="true">
                                     expand_more
@@ -495,7 +524,7 @@ const CreatorInquiryForm = ({ inquiryType, onInquiryTypeChange }) => {
                         </div>
                         <div>
                             <label htmlFor="referralSource" className="block text-sm font-semibold leading-5 text-[#0A0A0A]">
-                                How did you hear about us?
+                                {t('formReferral')}
                             </label>
                             <div className="relative mt-2">
                                 <select
@@ -505,8 +534,10 @@ const CreatorInquiryForm = ({ inquiryType, onInquiryTypeChange }) => {
                                     onChange={updateValue}
                                     className={`${creatorInputClass} !mt-0 cursor-pointer appearance-none pr-12`}
                                 >
-                                    <option value="">Select an option</option>
-                                    {referralSources.map((source) => <option key={source}>{source}</option>)}
+                                    <option value="">{t('formSelectOption')}</option>
+                                    {referralSources.map((source) => (
+                                        <option key={source} value={source}>{t(source === 'Other' ? 'referralOther' : optionLabelKeys[source])}</option>
+                                    ))}
                                 </select>
                                 <span className="material-symbols-outlined pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#3C4A42]" aria-hidden="true">
                                     expand_more
@@ -516,31 +547,32 @@ const CreatorInquiryForm = ({ inquiryType, onInquiryTypeChange }) => {
                     </div>
                     {values.referralSource === 'Other' && textField(
                         'referralOther',
-                        'Tell us where you heard about us',
+                        t('formReferralOther'),
                         values.referralOther,
                         updateValue,
                         { required: true, inputClassName: creatorInputClass }
                     )}
-                    {textField('message', 'Additional Message', values.message, updateValue, {
+                    {textField('message', t('formAdditionalMessage'), values.message, updateValue, {
                         textarea: true,
                         maxLength: 5000,
                         inputClassName: creatorInputClass,
                         textareaClassName: 'block !h-[104px] min-h-[104px]',
                         optional: true,
-                        placeholder: 'Tell us about your upcoming plans or partnership preferences...',
+                        optionalLabel: t('formOptional'),
+                        placeholder: t('formMessagePlaceholder'),
                     })}
                 </section>
             )}
 
             {inquiryType === 'partner_inquiry' && (
-                <section aria-label="Talent / Creator Partnerships" className="space-y-6">
+                <section aria-label={t('formPartnerRegion')} className="space-y-6">
                     <div className="grid gap-6 sm:grid-cols-2">
-                        {textField('name', 'Full Name', values.name, updateValue, {
+                        {textField('name', t('formFullName'), values.name, updateValue, {
                             required: true,
                             autoComplete: 'name',
-                            placeholder: 'Your full name',
+                            placeholder: t('fullNamePlaceholder'),
                         })}
-                        {textField('email', 'Email Address', values.email, updateValue, {
+                        {textField('email', t('formEmail'), values.email, updateValue, {
                             required: true,
                             type: 'email',
                             autoComplete: 'email',
@@ -548,14 +580,14 @@ const CreatorInquiryForm = ({ inquiryType, onInquiryTypeChange }) => {
                         })}
                         {textField(
                             'organization',
-                            'Agency / Management Company / Organization',
+                            t('formOrganization'),
                             values.organization,
                             updateValue,
-                            { required: true, placeholder: 'Agency or Organization name' }
+                            { required: true, placeholder: t('formOrganizationPlaceholder') }
                         )}
                         <div>
                             <label htmlFor="role" className="block text-sm font-semibold leading-5 text-[#0A0A0A]">
-                                Your Role <span aria-hidden="true" className="text-[#BA1A1A]">*</span>
+                                {t('formRole')} <span aria-hidden="true" className="text-[#BA1A1A]">*</span>
                             </label>
                             <div className="relative mt-2">
                                 <select
@@ -566,8 +598,10 @@ const CreatorInquiryForm = ({ inquiryType, onInquiryTypeChange }) => {
                                     required
                                     className={`${inputClass} !mt-0 cursor-pointer appearance-none pr-12`}
                                 >
-                                    <option value="">Select your role</option>
-                                    {roles.map((role) => <option key={role}>{role}</option>)}
+                                    <option value="">{t('formSelectRole')}</option>
+                                    {roles.map((role) => (
+                                        <option key={role} value={role}>{t(role === 'Other' ? 'roleOther' : optionLabelKeys[role])}</option>
+                                    ))}
                                 </select>
                                 <span className="material-symbols-outlined pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#3C4A42]" aria-hidden="true">
                                     expand_more
@@ -576,22 +610,23 @@ const CreatorInquiryForm = ({ inquiryType, onInquiryTypeChange }) => {
                         </div>
                         {textField(
                             'talentNameOrProfile',
-                            'Talent / Creator Name or Profile',
+                            t('formTalentProfile'),
                             values.talentNameOrProfile,
                             updateValue,
-                            { inlineOptional: true, placeholder: 'e.g. @creatorhandle or profile link' }
+                            { inlineOptional: true, optionalLabel: t('formOptional'), placeholder: t('formTalentPlaceholder') }
                         )}
-                        {textField('phone', 'Phone', values.phone, updateValue, {
+                        {textField('phone', t('formPhone'), values.phone, updateValue, {
                             inlineOptional: true,
                             type: 'tel',
                             autoComplete: 'tel',
-                            placeholder: '+1 (555) 000-0000',
+                            optionalLabel: t('formOptional'),
+                            placeholder: t('formPhonePlaceholder'),
                         })}
                     </div>
                     <div>
                         {textField(
                             'message',
-                            'How can we help with this collaboration?',
+                            t('formCollabMessage'),
                             values.message,
                             updateValue,
                             {
@@ -601,9 +636,9 @@ const CreatorInquiryForm = ({ inquiryType, onInquiryTypeChange }) => {
                                 textareaClassName: '!h-[126px] min-h-[126px] !py-3.5',
                             }
                         )}
-                        <div className="font-inter mt-2 flex items-center justify-between gap-4 pt-1 text-xs leading-6 text-[#8A8A8A]">
-                            <span>Detail talent roster sizes, genres, or target brand campaign categories.</span>
-                            <span className="shrink-0">{values.message.length} / 1000 characters</span>
+                        <div className="font-inter mt-2 flex flex-wrap items-center justify-between gap-x-4 pt-1 text-xs leading-6 text-[#8A8A8A]">
+                            <span>{t('formCollabHint')}</span>
+                            <span className="shrink-0">{t('formCharacters', { count: values.message.length, limit: 1000 })}</span>
                         </div>
                     </div>
                 </section>
@@ -618,7 +653,7 @@ const CreatorInquiryForm = ({ inquiryType, onInquiryTypeChange }) => {
                         verified
                     </span>
                     <p>
-                        All communications received via this portal trigger secure PGP-validated routing directly to The Jasper Hub Talent Management Secretariat.
+                        {t('formSecureRouting')}
                     </p>
                 </div>
             )}
@@ -631,20 +666,20 @@ const CreatorInquiryForm = ({ inquiryType, onInquiryTypeChange }) => {
                         className={`inline-flex w-full items-center justify-center rounded-full bg-[#0FB97F] py-4 text-sm uppercase text-white shadow-md transition-colors hover:bg-[#0CA06E] focus:outline-none focus:ring-2 focus:ring-[#0FB97F] focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto ${isCreator ? 'min-h-[52px] gap-2 px-10 font-bold tracking-wide sm:min-w-[280px]' : 'min-h-[52px] gap-3 px-8 font-semibold tracking-wider'}`}
                     >
                         {isSubmitting
-                            ? 'Sending...'
+                            ? t('formSending')
                             : inquiryType === 'partner_inquiry'
-                                ? 'Submit Collaboration Inquiry'
-                                : 'Submit Application'}
+                                ? t('formSubmitCollab')
+                                : t('formSubmitApplication')}
                         <span className="material-symbols-outlined text-lg leading-5" aria-hidden="true">arrow_forward</span>
                     </button>
                     {inquiryType === 'partner_inquiry' && (
                         <p className="font-inter text-[13px] leading-5 text-[#8A8A8A]">
-                            Urgent partnership? Direct talent desk available
+                            {t('formUrgent')}
                         </p>
                     )}
                     {inquiryType === 'creator_representation' && (
                         <p className="max-w-md text-center font-inter text-[13px] leading-5 text-[#8A8A8A]">
-                            Prefer direct correspondence? Forward media kits to{' '}
+                            {t('formMediaKit')}{' '}
                             <a className="font-semibold text-[#111111] hover:text-[#0FB97F]" href="mailto:info@thejasperhub.com">
                                 info@thejasperhub.com
                             </a>.
@@ -663,7 +698,7 @@ const CreatorInquiryForm = ({ inquiryType, onInquiryTypeChange }) => {
                             : 'border-red-600 bg-red-50 text-red-800'
                     }`}
                 >
-                    {status.message}
+                    {t(status.messageKey)}
                 </p>
             )}
         </form>

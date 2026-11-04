@@ -21,7 +21,6 @@ import Influencer from '../assets/service-influencer.webp'
 const Services = ({ changeLanguage, i18n, t }) => {
     const { t: translate } = useTranslation();
     const trans = typeof translate === 'function' ? translate : t;
-    const currentLang = i18n?.language || 'en';
 
     // 为每个部分创建ref
     const heroRef = useRef(null);
@@ -43,7 +42,7 @@ const Services = ({ changeLanguage, i18n, t }) => {
                 <div className="absolute inset-0 z-0" style={{ minHeight: '100vh', width: '100vw', top: 0, left: 0 }}>
                     <img
                         src={ServiceBanner}
-                        alt="Service Banner"
+                        alt={trans('servicesBannerAlt')}
                         className="w-full h-full object-cover"
                         style={{ objectFit: 'cover', backgroundPosition: 'center' }}
                         loading='eager'
@@ -67,19 +66,9 @@ const Services = ({ changeLanguage, i18n, t }) => {
                         transition={{ duration: 0.8, ease: "easeOut" }}
                     >
                         <h1 className="text-5xl md:text-10xl lg:text-7xl font-bold text-gray-1000 mb-6 leading-tight" style={{ lineHeight: '1.35' }}>
-                            {currentLang === 'zh' ? (
-                                <>
-                                    我们如何<br />
-                                    服务品牌<br />
-                                    成功
-                                </>
-                            ) : (
-                                <>
-                                    How can We<br />
-                                    Help Brands<br />
-                                    Succeed.
-                                </>
-                            )}
+                            {trans('servicesHeroLine1')}<br />
+                            {trans('servicesHeroLine2')}<br />
+                            {trans('servicesHeroLine3')}
                         </h1>
                     </motion.div>
                 </div>
@@ -93,7 +82,7 @@ const Services = ({ changeLanguage, i18n, t }) => {
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
                         {/* 左侧：视觉故事拼贴画 */}
-                        <div className="relative h-[600px] lg:h-[700px]">
+                        <div className="relative mb-[90px] h-[600px] lg:mb-0 lg:h-[700px]">
                             {/* 重叠的图片卡片1 */}
                             <motion.div
                                 initial={{ opacity: 0, x: -30 }}
@@ -105,7 +94,7 @@ const Services = ({ changeLanguage, i18n, t }) => {
                                 <img
                                     src={StrategyPlan}
                                     loading='lazy'
-                                    alt="Strategy Planning"
+                                    alt={trans('servicesStrategyImageAlt')}
                                     className="w-full h-full object-cover rounded-2xl shadow-2xl"
                                 />
                                 {/* 浮动UI元素 */}
@@ -113,7 +102,7 @@ const Services = ({ changeLanguage, i18n, t }) => {
                                     <span className="text-xl">📊</span>
                                 </div>
                                 <div className="absolute bottom-4 left-4 bg-[#F5D76E] text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
-                                    Strategy
+                                    {trans('servicesStrategy')}
                                 </div>
                             </motion.div>
 
@@ -128,7 +117,7 @@ const Services = ({ changeLanguage, i18n, t }) => {
                                 <img
                                     src={ContentCreate}
                                     loading='lazy'
-                                    alt="Content Creation"
+                                    alt={trans('servicesContentImageAlt')}
                                     className="w-full h-full object-cover rounded-2xl shadow-2xl"
                                 />
                                 {/* 浮动UI元素 */}
@@ -136,7 +125,7 @@ const Services = ({ changeLanguage, i18n, t }) => {
                                     <span className="text-xl">📱</span>
                                 </div>
                                 <div className="absolute bottom-4 right-4 bg-[#0FB97F] text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
-                                    Content
+                                    {trans('servicesContent')}
                                 </div>
                             </motion.div>
 
@@ -152,7 +141,7 @@ const Services = ({ changeLanguage, i18n, t }) => {
                                     <img
                                         src={Influencer}
                                         loading='lazy'
-                                        alt="Influencer Collaboration"
+                                        alt={trans('servicesInfluencerImageAlt')}
                                         className="w-full h-full object-cover"
                                     />
                                     {/* 浮动UI元素 */}
@@ -160,7 +149,7 @@ const Services = ({ changeLanguage, i18n, t }) => {
                                         <span className="text-2xl">🤝</span>
                                     </div>
                                     <div className="absolute bottom-8 left-8 bg-[#8B5CF6] text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
-                                        Influencer
+                                        {trans('servicesInfluencer')}
                                     </div>
                                 </div>
                             </motion.div>
@@ -178,7 +167,7 @@ const Services = ({ changeLanguage, i18n, t }) => {
                                 className="text-5xl md:text-4xl lg:text-5xl font-bold text-gray-700 mb-2 font-sans"
                                 style={{ fontFamily: "'Sour Gummy', sans-serif" }}
                             >
-                                {currentLang === 'zh' ? '社交媒体全案营销策划' : 'Full-Funnel Social Media Marketing Strategy'}
+                                {trans('servicesStrategyTitle')}
                             </motion.h2>
 
                             {/* 小写大写副标题 */}
@@ -188,28 +177,26 @@ const Services = ({ changeLanguage, i18n, t }) => {
                                 transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
                                 className="text-xs md:text-sm uppercase tracking-widest text-gray-600 mb-4"
                             >
-                                {currentLang === 'zh'
-                                    ? '我们构建基于数据的增长模型，通过量身定制的品牌和内容策略来提升产品价值'
-                                    : 'We craft data-driven growth models that amplify product value through tailored brand and content strategies.'}
+                                {trans('servicesStrategySubtitle')}
                             </motion.p>
 
                             {/* 三个内容块 */}
                             <div className="space-y-4">
                                 {[
                                     {
-                                        label: currentLang === 'zh' ? '策略规划' : 'Strategy Planning',
+                                        label: trans('servicesStrategy'),
                                         labelColor: '#F5D76E',
-                                        desc: currentLang === 'zh' ? '基于产品增长目标，我们从产品、用户、竞对产品、内容等多个维度进行深度分析，确定投测模型和周期，基于用户行为和投放数据表现等数据指标不断重复迭代内容驱动增长模型，使产品市占率和回报率保持增长' : 'Based on product growth objectives, we conduct in-depth analysis from multiple dimensions including product, user, competitive product, and content, to determine testing models and cycles. We continuously iterate content-driven growth models based on user behavior and ad performance data metrics, maintaining product market share and ROI growth.'
+                                        desc: trans('servicesStrategyDesc'),
                                     },
                                     {
-                                        label: currentLang === 'zh' ? '内容规划' : 'Content Planning',
+                                        label: trans('servicesContent'),
                                         labelColor: '#0FB97F',
-                                        desc: currentLang === 'zh' ? '通过对投测内容的数据复盘分析和结构拆解，从视频的曝光，完播率和互动率以及视频转化率等角度，不断优化视频内容的质量和结构呼应，提高产品价值的展示率和受众的留存转化率，使产品占领用户心智' : 'Through data review analysis and structural deconstruction of tested content, we continuously optimize video content quality and structural coherence from perspectives including video exposure, completion rate, engagement rate, and conversion rate. This improves product value display rate and audience retention conversion rate, making the product occupy user mindshare.'
+                                        desc: trans('servicesContentDesc'),
                                     },
                                     {
-                                        label: currentLang === 'zh' ? '影响者合作' : 'Influencer Collaboration',
+                                        label: trans('servicesInfluencer'),
                                         labelColor: '#8B5CF6',
-                                        desc: currentLang === 'zh' ? '与各大社媒平台的影响者建立合作关系，建立基于达人影响力的矩阵流量集中池，依托平台推荐算法打造热门话题，鼓励创作者发挥自主创意提高用户信任度。从流量、受众和转化等维度筛选优质的影响者深度合作，为产品营销存储充足优质资源' : 'Establish partnerships with influencers across major social media platforms, creating a matrix traffic concentration pool based on influencer impact. We leverage platform recommendation algorithms to create trending topics and encourage creators to exercise autonomous creativity to enhance user trust. We screen high-quality influencers for in-depth collaboration from dimensions including traffic, audience, and conversion, storing sufficient high-quality resources for product marketing.'
+                                        desc: trans('servicesInfluencerDesc'),
                                     }
                                 ].map((item, index) => (
                                     <motion.div
@@ -248,7 +235,7 @@ const Services = ({ changeLanguage, i18n, t }) => {
                         transition={{ duration: 0.6, ease: "easeOut" }}
                         className="text-4xl md:text-5xl font-bold text-gray-900 mb-3 text-center font-sans"
                     >
-                        {currentLang === 'zh' ? '协作' : 'Cooperation'}
+                        {trans('servicesCooperation')}
                     </motion.h2>
 
                     {/* 小写大写副标题 */}
@@ -258,9 +245,7 @@ const Services = ({ changeLanguage, i18n, t }) => {
                         transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
                         className="text-sm md:text-base uppercase tracking-widest text-gray-600 max-w-4xl mx-auto mb-16 text-center"
                     >
-                        {currentLang === 'zh'
-                            ? '高效的协作方式，与客户携手推动品牌成功'
-                            : 'Efficient collaboration methods, working with clients to drive brand success'}
+                        {trans('servicesCooperationSubtitle')}
                     </motion.p>
 
                     {/* 五项执行节点 */}
@@ -268,23 +253,28 @@ const Services = ({ changeLanguage, i18n, t }) => {
                         {[
                             {
                                 icon: 'investigate',
-                                title: currentLang === 'zh' ? '营销分析' : 'Marketing Analysis',
+                                title: trans('servicesStepAnalysis'),
+                                desc: trans('servicesStepAnalysisDesc'),
                             },
                             {
                                 icon: 'analysis',
-                                title: currentLang === 'zh' ? '策略制定' : 'Strategy Development',
+                                title: trans('servicesStepStrategy'),
+                                desc: trans('servicesStepStrategyDesc'),
                             },
                             {
                                 icon: 'execute',
-                                title: currentLang === 'zh' ? '投放执行' : 'Campaign Execution',
+                                title: trans('servicesStepExecution'),
+                                desc: trans('servicesStepExecutionDesc'),
                             },
                             {
                                 icon: 'reanalyze',
-                                title: currentLang === 'zh' ? '数据复盘' : 'Performance Review',
+                                title: trans('servicesStepReview'),
+                                desc: trans('servicesStepReviewDesc'),
                             },
                             {
                                 icon: 'discussion',
-                                title: currentLang === 'zh' ? '会议沟通' : 'Strategic Alignment',
+                                title: trans('servicesStepAlignment'),
+                                desc: trans('servicesStepAlignmentDesc'),
                             }
                         ].map((service, index) => (
                             <motion.div

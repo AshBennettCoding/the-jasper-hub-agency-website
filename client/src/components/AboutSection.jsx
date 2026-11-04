@@ -10,7 +10,7 @@ const ABOUT_CARDS_CONFIG = [
         key: 'mission',
         icon: 'track_changes',
         translations: {
-            zh: { title: '我们的使命', desc: '为领先科技公司的面向消费者的应用程序提供高效优质的数字媒体营销解决方案。' },
+            zh: { title: '我们的使命', desc: '为领先科技企业的消费类应用提供高效、优质的数字营销方案。' },
             en: { title: 'Our Mission', desc: 'Delivering highly efficient digital media marketing solutions for consumer-facing APPs of leading technology companies.' }
         }
     },
@@ -18,7 +18,7 @@ const ABOUT_CARDS_CONFIG = [
         key: 'vision',
         icon: 'rocket_launch',
         translations: {
-            zh: { title: '我们的愿景', desc: '以内容演绎产品故事，帮助品牌产品实现长期增长，成为全球领先的社交媒体营销服务商' },
+            zh: { title: '我们的愿景', desc: '以内容讲好产品故事，助力品牌持续增长，成为全球领先的社交媒体营销伙伴。' },
             en: { title: 'Our Vision', desc: 'Bringing product stories to life through content, empowering brands to achieve long-term growth and become a leading global social media marketing partner.' }
         }
     },
@@ -26,7 +26,7 @@ const ABOUT_CARDS_CONFIG = [
         key: 'value',
         icon: 'lightbulb',
         translations: {
-            zh: { title: '核心价值', desc: '凭借成果为导向的理念，我们将数据洞察与协作创新相结合，以推动品牌的长期发展。' },
+            zh: { title: '核心价值', desc: '以成果为导向，融合数据洞察与协作创新，推动品牌长期发展。' },
             en: { title: 'Core Value', desc: 'Driven by results, we combine data insights with collaborative creation to power long-term brand growth.' }
         }
     },
@@ -34,8 +34,8 @@ const ABOUT_CARDS_CONFIG = [
         key: 'Succeed',
         icon: 'celebration',
         translations: {
-            zh: { title: '成功案例', desc: '成功服务上百个知名领先科技企业旗下的APP实现高净值的长期市场增长' },
-            en: { title: 'successful case', desc: 'Driving high-value, long-term growth for apps backed by over 100 leading technology companies.' }
+            zh: { title: '成功案例', desc: '助力百余家领先科技企业旗下应用，实现高价值、可持续的市场增长。' },
+            en: { title: 'Success Cases', desc: 'Driving high-value, long-term growth for apps backed by over 100 leading technology companies.' }
         }
     }
 ];
@@ -91,10 +91,10 @@ const AboutSection = ({ i18n, t }) => {
     // 详情文本（核心修改：按钮文字改为"了解服务/Our Services"）
     const detailText = {
         title: currentLang === 'zh'
-            ? '通过数据驱动的内容与创作者合作，建立真实用户信任，打造可持续增长的品牌影响力'
+            ? '以创作者内容赢得信任，驱动品牌持续增长'
             : 'Building Authentic User Trust Through Creator-Led Content, Driving Sustainable Brand Growth',
         content: currentLang === 'zh'
-            ? '我们聚焦于全球影响者营销与增长策略打造，服务100+品牌，通过数据与内容协同，实现高质量用户获取与品牌长期持续增长。'
+            ? '我们专注全球影响者营销与增长策略，已服务百余品牌。通过数据洞察与优质内容，助力品牌高效获客、持续增长。'
             : 'We specialize in global influencer marketing and growth strategy, helping 100+ brands achieve high-quality user acquisition and sustainable growth through data-driven content.',
         // 修改：按钮文字从"了解更多/Learn More"改为"了解服务/About Services"
         buttonText: currentLang === 'zh' ? '了解服务' : 'About Services'

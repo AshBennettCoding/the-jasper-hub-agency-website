@@ -80,12 +80,12 @@ const Navbar = ({ isHome = false, changeLanguage, i18n, t }) => {
                     <Link
                         to={`/?lang=${currentLang}`}
                         className="flex h-12 w-[176px] items-center overflow-hidden"
-                        aria-label="The Jasper Hub Home"
+                        aria-label={translate('navHomeAria')}
                         onClick={closeMobileMenu}
                     >
                         <img
                             src={AgencyLogo}
-                            alt="The Jasper Hub"
+                            alt={translate('navLogoAlt')}
                             className="h-auto w-[176px] max-w-none shrink-0"
                         />
                     </Link>
@@ -93,7 +93,7 @@ const Navbar = ({ isHome = false, changeLanguage, i18n, t }) => {
                     <button
                         type="button"
                         className="mobile-menu-toggle"
-                        aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+                        aria-label={translate(isMobileMenuOpen ? 'navCloseMenu' : 'navOpenMenu')}
                         aria-expanded={isMobileMenuOpen}
                         aria-controls="primary-navigation"
                         onClick={() => setIsMobileMenuOpen((open) => !open)}
@@ -107,7 +107,7 @@ const Navbar = ({ isHome = false, changeLanguage, i18n, t }) => {
                         id="primary-navigation"
                         className={`primary-navigation flex items-center gap-8${isMobileMenuOpen ? ' is-open' : ''}`}
                     >
-                        <nav aria-label="Main navigation" className="hidden items-center gap-8 md:flex">
+                        <nav aria-label={translate('navMainAria')} className="hidden items-center gap-8 md:flex">
                             {navigationItems.map(({ key, path }) => {
                                 const label = translate(key === 'forInfluencers' ? 'navForInfluencers' : key);
                                 const isCurrent = location.pathname === path;
@@ -152,8 +152,8 @@ const Navbar = ({ isHome = false, changeLanguage, i18n, t }) => {
                             </div>
                             <Link
                                 to={`/contact?lang=${currentLang}`}
-                                aria-label="Portal"
-                                title="Portal"
+                                aria-label={translate('navPortal')}
+                                title={translate('navPortal')}
                                 className="flex h-8 w-8 items-center justify-center rounded-full bg-[#0FB97F]/10 text-[#0FB97F] transition-colors hover:bg-[#0FB97F]/20"
                                 onClick={closeMobileMenu}
                             >

@@ -41,26 +41,26 @@ const featureCards = [
     {
         titleKey: 'reason1',
         descriptionKey: 'reason1Desc',
-        tag: 'Successful Cases',
+        tagKey: 'homeTagCases',
         tagClass: 'bg-[#E9F2FE] text-[#1A73E8]',
         image: ChooseCard01,
-        alt: 'Business partners discussing a campaign',
+        altKey: 'homeAltPartnership',
     },
     {
         titleKey: 'reason2',
         descriptionKey: 'reason2Desc',
-        tag: 'Data-Driven',
+        tagKey: 'homeTagData',
         tagClass: 'bg-[#E6F8F0] text-[#0FB97F]',
         image: ChooseCard02,
-        alt: 'Marketing analytics and growth metrics',
+        altKey: 'homeAltAnalytics',
     },
     {
         titleKey: 'reason3',
         descriptionKey: 'reason3Desc',
-        tag: 'Asset accumulation',
+        tagKey: 'homeTagAssets',
         tagClass: 'bg-[#F5EDFD] text-[#8430D9]',
         image: ChooseCard03,
-        alt: 'Creative team planning a campaign',
+        altKey: 'homeAltTeam',
     },
 ];
 
@@ -98,7 +98,7 @@ const Home = ({ changeLanguage, i18n }) => {
                             {t('intro_tag')}
                         </p>
                         <h1 className="mb-5 text-[40px] font-extrabold leading-[1.12] text-[#111111] sm:text-[54px] md:text-[64px]">
-                            The Jasper Hub Agency
+                            {t('agencyName')}
                         </h1>
                         <p className="font-inter mb-10 max-w-2xl text-base leading-relaxed text-[#555555] sm:text-lg md:text-[19px]">
                             {t('intro_sub')}
@@ -132,9 +132,7 @@ const Home = ({ changeLanguage, i18n }) => {
                             </h2>
                             <div className="mb-4 mt-3.5 h-1 w-12 rounded-full bg-[#0FB97F]" />
                             <p className="font-inter max-w-xl text-base leading-relaxed text-[#555555]">
-                                {language === 'zh'
-                                    ? '我们提供全面的解决方案，帮助您的品牌在数字领域中脱颖而出。'
-                                    : 'We provide comprehensive solutions to help your brand stand out in the digital landscape.'}
+                                {t('homeWhyChooseDesc')}
                             </p>
                         </div>
 
@@ -149,7 +147,7 @@ const Home = ({ changeLanguage, i18n }) => {
                                     className="group flex flex-col rounded-3xl border border-gray-100 bg-white p-7 shadow-[0_4px_24px_rgba(0,0,0,0.03)] transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_16px_36px_rgba(0,0,0,0.08)]"
                                 >
                                     <span className={`mb-5 inline-flex w-fit items-center rounded-full px-4 py-1.5 text-xs font-semibold ${card.tagClass}`}>
-                                        {card.tag}
+                                        {t(card.tagKey)}
                                     </span>
                                     <h3 className="mb-3 text-xl font-bold text-[#111111] transition-colors group-hover:text-[#006C48]">
                                         {t(card.titleKey)}
@@ -160,7 +158,7 @@ const Home = ({ changeLanguage, i18n }) => {
                                     <div className="h-52 w-full overflow-hidden rounded-2xl bg-gray-100">
                                         <img
                                             src={card.image}
-                                            alt={card.alt}
+                                            alt={t(card.altKey)}
                                             loading="lazy"
                                             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                                         />
@@ -201,22 +199,18 @@ const Home = ({ changeLanguage, i18n }) => {
                     <div className="mx-auto max-w-[1240px] px-6">
                         <div className="flex max-w-3xl flex-col items-start">
                             <h2 className="mb-6 text-5xl font-extrabold uppercase leading-[1.05] text-[#111111] sm:text-6xl md:text-7xl">
-                                {language === 'zh' ? (
-                                    <>让我们<br />开始<br />合作！</>
-                                ) : (
-                                    <>LET&apos;S<br />WORK<br />TOGETHER!</>
-                                )}
+                                {t('homeCtaLine1')}<br />
+                                {t('homeCtaLine2')}<br />
+                                {t('homeCtaLine3')}
                             </h2>
                             <p className="font-inter mb-8 max-w-2xl text-base leading-relaxed text-[#555555] sm:text-lg">
-                                {language === 'zh'
-                                    ? '准备好将您的品牌提升到新高度了吗？让我们一起创造卓越。'
-                                    : "Ready to take your brand to the next level? Let's create something extraordinary together."}
+                                {t('homeCtaDescription')}
                             </p>
                             <Link
                                 to={`/contact?lang=${language}`}
                                 className="group inline-flex items-center gap-3 rounded-lg border border-black/80 bg-white px-7 py-3 text-sm font-bold text-[#111111] shadow-sm transition hover:-translate-y-0.5 hover:bg-gray-50 hover:shadow-md"
                             >
-                                <span>{language === 'zh' ? '联系我们' : 'Contact Us'}</span>
+                                <span>{t('homeCtaButton')}</span>
                                 <span className="material-symbols-outlined text-lg transition-transform group-hover:translate-x-1" aria-hidden="true">
                                     arrow_forward
                                 </span>

@@ -87,6 +87,161 @@ test('Chinese homepage localizes both audience links and keeps the selected lang
     'href',
     '/contact?lang=zh'
   );
+  expect(screen.getByRole('heading', { name: '关于我们' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: '为什么选择我们' })).toBeInTheDocument();
+  expect(screen.queryByText('About Us')).not.toBeInTheDocument();
+});
+
+test('Chinese services and contact pages translate their visible workflow copy', async () => {
+  setLocation('/services?lang=zh');
+  const { unmount } = render(<App />);
+
+  expect(await screen.findByRole('heading', { name: /我们如何.*助力品牌.*成功/s })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: '社交媒体全案营销策划' })).toBeInTheDocument();
+  expect(screen.queryByText('Full-Funnel Social Media Marketing Strategy')).not.toBeInTheDocument();
+
+  unmount();
+  setLocation('/contact?lang=zh');
+  render(<App />);
+
+  expect(await screen.findByRole('heading', { name: '联系我们' })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: '联系我们' })).toBeInTheDocument();
+  expect(screen.queryByText('Sending...')).not.toBeInTheDocument();
+});
+
+test('services page localizes strategy and cooperation copy in both languages', async () => {
+  setLocation('/services?lang=en');
+  const { unmount } = render(<App />);
+
+  expect(await screen.findByText(
+    'We translate growth goals into a clear testing roadmap, using audience, product, competitor, and performance data to scale what works.'
+  )).toBeInTheDocument();
+  expect(screen.getByText('Marketing Analysis')).toBeInTheDocument();
+  expect(screen.getByText(
+    'An efficient operating rhythm that keeps every brand initiative aligned and moving forward.'
+  )).toBeInTheDocument();
+
+  unmount();
+  setLocation('/services?lang=zh');
+  render(<App />);
+
+  expect(await screen.findByText(
+    '围绕增长目标，综合分析产品、用户、竞品与内容数据，制定清晰的测试路径，持续放大有效策略。'
+  )).toBeInTheDocument();
+  expect(screen.getByText('营销分析')).toBeInTheDocument();
+  expect(screen.getByText('以高效协作推动品牌持续增长。')).toBeInTheDocument();
+});
+
+test('Chinese navigation and page metadata follow the selected language', async () => {
+  setLocation('/?lang=zh');
+  render(<App />);
+
+  expect(await screen.findByRole('navigation', { name: '主导航' })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'The Jasper Hub 首页' })).toHaveAttribute('href', '/?lang=zh');
+  expect(document.querySelector('.mobile-menu-toggle')).toHaveAttribute('aria-label', '展开导航菜单');
+  await waitFor(() => expect(document.documentElement.lang).toBe('zh'));
+  expect(document.title).toBe('The Jasper Hub | 全球创作者营销与品牌增长');
+  fireEvent.click(screen.getByRole('button', { name: 'EN' }));
+  expect(await screen.findByRole('navigation', { name: 'Main navigation' })).toBeInTheDocument();
+  await waitFor(() => expect(document.documentElement.lang).toBe('en'));
+});
+
+test('Chinese partner form preserves API role values and localizes submission feedback', async () => {
+  const originalFetch = global.fetch;
+  global.fetch = jest.fn().mockResolvedValue({
+    ok: true,
+    json: async () => ({ success: true, message: 'Creator Partnership / Talent Collaboration Inquiry sent successfully.' }),
+  });
+  setLocation('/globaltalents-collab?lang=zh');
+
+  try {
+    render(<App />);
+    fireEvent.change(await screen.findByLabelText(/^我们可以如何帮助您/), {
+      target: { value: 'partner_inquiry' },
+    });
+    const role = screen.getByLabelText(/^您的身份/);
+    expect(within(role).getByRole('option', { name: '人才机构' })).toHaveValue('Talent Agency');
+    expect(within(role).getByRole('option', { name: '其他' })).toHaveValue('Other');
+    fireEvent.change(screen.getByLabelText(/^姓名/), { target: { value: '合作测试' } });
+    fireEvent.change(screen.getByLabelText(/^邮箱地址/), { target: { value: 'qa@example.com' } });
+    fireEvent.change(screen.getByLabelText(/^人才机构\/管理公司\/组织/), { target: { value: '测试机构' } });
+    fireEvent.change(role, { target: { value: 'Talent Agency' } });
+    fireEvent.change(screen.getByLabelText(/^请说明您的合作需求/), { target: { value: '咨询创作者合作。' } });
+    expect(screen.getByText(/\/ 1000 字符/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: '提交合作咨询' }));
+    expect(await screen.findByRole('status')).toHaveTextContent('创作者合作与人才对接咨询已成功发送。');
+    expect(JSON.parse(global.fetch.mock.calls[0][1].body)).toMatchObject({
+      inquiryType: 'partner_inquiry', role: 'Talent Agency', organization: '测试机构',
+    });
+  } finally {
+    global.fetch = originalFetch;
+  }
+});
+
+test('Chinese creator options retain canonical values and Other reveals referral details', async () => {
+  const originalFetch = global.fetch;
+  global.fetch = jest.fn().mockResolvedValue({
+    ok: true,
+    json: async () => ({ success: true, message: 'Your inquiry has been sent successfully.' }),
+  });
+  setLocation('/globaltalents-collab?lang=zh');
+
+  try {
+    render(<App />);
+    fireEvent.change(await screen.findByLabelText(/^我们可以如何帮助您/), {
+      target: { value: 'creator_representation' },
+    });
+    const country = screen.getByLabelText(/^国家\/地区/);
+    expect(within(country).getByRole('option', { name: '美国' })).toHaveValue('United States');
+    const category = screen.getByLabelText(/^主要内容领域/);
+    expect(within(category).getByRole('option', { name: '科技' })).toHaveValue('Technology');
+    expect(within(category).getByRole('option', { name: '其他' })).toHaveValue('Other');
+    fireEvent.change(screen.getByLabelText(/^姓名/), { target: { value: '创作者测试' } });
+    fireEvent.change(screen.getByLabelText(/^邮箱地址/), { target: { value: 'creator@example.com' } });
+    fireEvent.change(country, { target: { value: 'United States' } });
+    fireEvent.click(screen.getByRole('radio', { name: '否' }));
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Instagram' }));
+    fireEvent.change(screen.getByLabelText('Instagram 主页链接 *'), { target: { value: 'https://instagram.com/qa' } });
+    fireEvent.change(screen.getByLabelText(/^受众规模/), { target: { value: '10000' } });
+    fireEvent.change(category, { target: { value: 'Technology' } });
+    fireEvent.change(screen.getByLabelText(/^您是如何了解到我们的/), { target: { value: 'Other' } });
+    fireEvent.change(screen.getByLabelText(/^请说明来源/), { target: { value: '合作伙伴推荐' } });
+    fireEvent.click(screen.getByRole('button', { name: 'EN' }));
+    expect(screen.getByLabelText(/^Country \/ Region/)).toHaveValue('United States');
+    expect(screen.getByLabelText(/^Primary Content Category/)).toHaveValue('Technology');
+    fireEvent.click(screen.getByRole('button', { name: '中文' }));
+    fireEvent.click(screen.getByRole('button', { name: '提交申请' }));
+    expect(await screen.findByRole('status')).toHaveTextContent('您的咨询已成功发送。');
+    expect(JSON.parse(global.fetch.mock.calls[0][1].body)).toEqual({
+      inquiryType: 'creator_representation', name: '创作者测试', email: 'creator@example.com',
+      country: 'United States', representationStatus: 'no',
+      platforms: [{ name: 'Instagram', profileUrl: 'https://instagram.com/qa', audienceSize: '10000' }],
+      primaryContent: 'Technology', referralSource: 'Other', referralOther: '合作伙伴推荐',
+    });
+  } finally {
+    global.fetch = originalFetch;
+  }
+});
+
+test.each([true, false])('Chinese brand contact feedback stays localized when API success is %s', async (ok) => {
+  const originalFetch = global.fetch;
+  global.fetch = jest.fn().mockResolvedValue({
+    ok,
+    json: async () => ({ success: ok, message: ok ? 'Your message has been sent successfully.' : 'Unable to send your inquiry. Please try again later.' }),
+  });
+  setLocation('/contact?lang=zh');
+  try {
+    render(<App />);
+    fireEvent.change(await screen.findByPlaceholderText('您的姓名'), { target: { value: '品牌测试' } });
+    fireEvent.change(screen.getByPlaceholderText('your@email.com'), { target: { value: 'brand@example.com' } });
+    fireEvent.change(screen.getByPlaceholderText('请介绍您的项目与合作需求...'), { target: { value: '品牌增长咨询。' } });
+    fireEvent.click(screen.getByRole('button', { name: '联系我们' }));
+    expect(await screen.findByRole(ok ? 'status' : 'alert')).toHaveTextContent(
+      ok ? '您的留言已成功发送！' : '留言发送失败，请稍后再试。'
+    );
+  } finally {
+    global.fetch = originalFetch;
+  }
 });
 
 test('creator inquiry route renders on a mobile user agent', async () => {

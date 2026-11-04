@@ -45,6 +45,36 @@ test('About Us cards use the prototype icon system instead of emoji glyphs', asy
   expect(about.closest('section')).not.toHaveTextContent('🎉');
 });
 
+test.each([
+  ['en', ["LET'S", 'WORK', 'TOGETHER!']],
+  ['zh', ['让我们', '开始', '合作！']],
+])('homepage keeps the three-line prototype CTA in %s', async (language, lines) => {
+  setLocation(`/?lang=${language}`);
+  render(<App />);
+
+  const main = await screen.findByRole('main');
+  const heading = main.querySelector('#contact h2');
+  expect(heading.querySelectorAll('br')).toHaveLength(2);
+  expect([...heading.childNodes]
+    .filter((node) => node.nodeName !== 'BR')
+      .map((node) => node.textContent)).toEqual(lines);
+});
+
+test.each([
+  ['en', ["LET'S", 'WORK', 'TOGETHER!']],
+  ['zh', ['让我们', '开始', '合作！']],
+])('talent page keeps the three-line prototype CTA in %s', async (language, lines) => {
+  setLocation(`/globaltalents-collab?lang=${language}`);
+  render(<App />);
+
+  const main = await screen.findByRole('main');
+  const heading = main.lastElementChild.querySelector('h2');
+  expect(heading.querySelectorAll('br')).toHaveLength(2);
+  expect([...heading.childNodes]
+    .filter((node) => node.nodeName !== 'BR')
+    .map((node) => node.textContent)).toEqual(lines);
+});
+
 test('inquiry routing starts unselected and reveals partnership fields only after selection', async () => {
   setLocation('/globaltalents-collab?lang=en');
   render(<App />);
@@ -139,17 +169,17 @@ test('partnership support provides the prototype review desk and direct manager 
   expect(within(sidebar).getByText('Within 24 Hours')).toBeVisible();
   expect(within(sidebar).getByText('24–48 Hours')).toBeVisible();
   expect(within(sidebar).getByText('Direct Talent Manager Sync')).toBeVisible();
-  expect(within(sidebar).getByRole('heading', { name: 'Direct Talent Manager' })).toBeVisible();
-  expect(within(sidebar).getByRole('heading', { name: 'Marcus Vance' })).toBeVisible();
-  expect(within(sidebar).getByRole('img', { name: 'Marcus Vance, Director of Talent Partnerships' })).toBeVisible();
-  expect(within(sidebar).getByRole('link', { name: 'talent@thejasperhub.com' })).toHaveAttribute(
+  expect(within(sidebar).getByRole('heading', { name: 'Direct Talent Department Contact' })).toBeVisible();
+  expect(within(sidebar).getByRole('heading', { name: 'Jasper Talent Management Department' })).toBeVisible();
+  const logo = within(sidebar).getByRole('img', { name: 'The Jasper Hub Agency logo' });
+  expect(logo).toBeVisible();
+  expect(logo).toHaveClass('bg-white', 'object-contain');
+  expect(within(sidebar).getByRole('link', { name: 'talents@collabjasperglobal.com' })).toHaveAttribute(
     'href',
-    'mailto:talent@thejasperhub.com'
+    'mailto:talents@collabjasperglobal.com'
   );
-  expect(within(sidebar).getByRole('link', { name: '+852 3905 8120 (Ext. 402)' })).toHaveAttribute(
-    'href',
-    'tel:+85239058120;ext=402'
-  );
+  expect(within(sidebar).queryByRole('link', { name: /\+852|phone/i })).not.toBeInTheDocument();
+  expect(within(sidebar).queryByText(/Director of Talent Partnerships|Creator Operations Secretariat/i)).not.toBeInTheDocument();
   expect(within(sidebar).getByText('Mon – Fri, 08:00 – 20:00 HKT / GMT+8')).toBeVisible();
 });
 
@@ -368,4 +398,22 @@ test('inquiry FAQ title preserves the prototype desktop line height', async () =
   setLocation('/globaltalents-collab?lang=en');
   render(<App />);
   expect(await screen.findByRole('heading', { name: "Questions? We've got answers" })).toHaveClass('sm:leading-[48px]');
+});
+
+test('Chinese talent page translates the contact card, FAQ, and inquiry route labels', async () => {
+  setLocation('/globaltalents-collab?lang=zh');
+  render(<App />);
+
+  const sidebar = await screen.findByRole('complementary', { name: '人才合作支持' });
+  expect(within(sidebar).getByRole('heading', { name: '直接人才部门沟通' })).toBeVisible();
+  expect(within(sidebar).getByRole('heading', { name: 'Jasper人才管理部门' })).toBeVisible();
+  expect(within(sidebar).getByRole('link', { name: 'talents@collabjasperglobal.com' })).toHaveAttribute(
+    'href',
+    'mailto:talents@collabjasperglobal.com'
+  );
+  expect(within(sidebar).queryByText(/Director|Secretariat|Phone/i)).not.toBeInTheDocument();
+
+  expect(await screen.findByRole('heading', { name: '有问题？我们为您解答' })).toBeVisible();
+  const selector = screen.getByLabelText(/^我们可以如何帮助您/);
+  expect(within(selector).getByRole('option', { name: '人才机构或影响者合作咨询' })).toBeInTheDocument();
 });
