@@ -27,13 +27,7 @@ Set these under **Cloudflare Pages > Settings > Environment variables > Producti
 
 The function also accepts `RECEIVE_EMAIL` and the historical misspelling `RECIEVE_EMAIL` as a temporary fallback when a route-specific recipient is not configured. New production deployments should configure `INFO_EMAIL` and `BUSINESS_EMAIL` explicitly.
 
-The frontend only needs its existing public variable:
-
-```text
-REACT_APP_API_URL=/api
-```
-
-This is not a secret and is compiled into the browser bundle. Never put `RESEND_API_KEY` or recipient credentials in a `REACT_APP_*` variable.
+The frontend calls the same-origin `/api/contact` endpoint directly, so no frontend environment variable is required for the current build. Never put `RESEND_API_KEY` or recipient credentials in a `REACT_APP_*` variable.
 
 ## Resend setup
 
